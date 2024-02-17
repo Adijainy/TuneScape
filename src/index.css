@@ -15,4 +15,8 @@
   .btn-purple {
     @apply bg-[#811B60] p-1 w-full tracking-wider hover:bg-[#af408c];
   }
+
+  .avatar-style {
+    @apply border border-spacing-1  border-[#562546] hover:border-[#96437c] hover:bg-[#411831] rounded-md cursor-pointer;
+  }
 }
