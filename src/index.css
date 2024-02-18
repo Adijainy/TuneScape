@@ -6,17 +6,17 @@
 
 @layer components {
   .text-field {
-    @apply bg-[#562546] p-1 w-full rounded-md text-white text-3xl tracking-wider font-Jomhuria text-center;
+    @apply bg-wine-50 p-1 w-full rounded-md text-white text-3xl tracking-wider font-Jomhuria text-center;
   }
   .text-box {
-    @apply mx-auto bg-[#411831] rounded-3xl mt-6 p-6 text-center shadow-lg shadow-[#E4BCDE] text-white text-3xl tracking-wider font-Jomhuria;
+    @apply mx-auto bg-wine-70 rounded-3xl mt-6 p-6 text-center shadow-lg shadow-wine-5 text-white text-3xl tracking-wider font-Jomhuria;
   }
 
   .btn-purple {
-    @apply bg-[#811B60] p-1 w-full tracking-wider hover:bg-[#af408c];
+    @apply bg-wine-30 p-1 w-full tracking-wider hover:bg-wine-20;
   }
 
   .avatar-style {
-    @apply border border-spacing-1  border-[#562546] hover:border-[#96437c] hover:bg-[#411831] rounded-md cursor-pointer;
+    @apply border border-spacing-1  border-wine-50 hover:border-wine-15 hover:bg-wine-70 rounded-md cursor-pointer;
   }
 }

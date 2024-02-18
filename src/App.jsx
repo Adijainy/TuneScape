@@ -12,7 +12,7 @@ function App() {
         autoplay="{true}"
         loop
         muted
-        className="absolute -z-10 w-auto min-w-full h-full max-w-none"
+        className="absolute -z-10 w-auto min-w-full max-h-full max-w-none "
       ></video>
       <RouterProvider router={appRouter} />
     </div>
