@@ -9,7 +9,7 @@ const lobbySchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  private: {
+  isPrivate: {
     type: Boolean,
     required: true,
   },
