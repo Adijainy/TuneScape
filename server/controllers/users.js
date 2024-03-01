@@ -3,8 +3,11 @@ const Lobby = require("../models/lobbyModel");
 
 exports.createUser = async (req, res) => {
   try {
-    const { username, avatar } = req.body;
-    const user = await User.create({ username, avatar });
+    const { username, avatar, leader } = req.body;
+    if(!username || !avatar){
+      return res.status(400).json({ message: `All fields are required user : ${username}, avatar: ${avatar}, leader: ${leader}` });
+    }
+    const user = await User.create({ username, avatar, leader });
     res.status(201).json(user);
   } catch (error) {
     res.status(500).json({ message: error.message });

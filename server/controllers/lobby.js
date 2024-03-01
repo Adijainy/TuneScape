@@ -3,12 +3,12 @@ const Lobby = require("../models/lobbyModel");
 
 exports.createLobby = async (req, res) => {
   try {
-    const { name, code, private, leader } = req.body;
+    const { name, code, isPrivate, leader } = req.body;
     const Leader = await User.findById(leader);
     const lobby = await Lobby.create({
       name,
       code,
-      private,
+      isPrivate,
     });
     const updateLobby = await Lobby.findByIdAndUpdate(
       lobby._id,
@@ -60,7 +60,7 @@ exports.joinLobby = async (req, res) => {
 
 exports.getPublicLobbies = async (req, res) => {
   try {
-    const lobbies = await Lobby.find({ private: false }).populate("members");
+    const lobbies = await Lobby.find({ isPrivate: false }).populate("members");
     res.status(200).json(lobbies);
   } catch (error) {
     res.status(500).json({ message: error.message });
