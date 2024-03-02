@@ -3,6 +3,7 @@ import bgVideo from "./assets/bg.mp4";
 import LandingPage from "./components/LandingPage";
 import CreateLobby from "./components/CreateLobby";
 import JoinPublicLobby from "./components/JoinPublicLobby";
+import ApiTester from './components/testing/ApiTester'
 
 function App() {
   return (
@@ -32,6 +33,10 @@ const appRouter = createBrowserRouter([
     path: "/joinPublicLobby",
     element: <JoinPublicLobby />,
   },
+  {
+    path: '/testing',
+    element: <ApiTester />
+  }
 ]);
 
 export default App;

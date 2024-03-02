@@ -1,6 +1,24 @@
 import React from "react";
-
+import { useEffect, useState } from "react";
 const CreateLobby = () => {
+  const [lobbyCode, setLobbyCode] = useState("");
+  useEffect(()=>{
+    setLobbyCode(generateUniqueCode(6));
+  },[])
+
+  function generateUniqueCode(length) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let code = '';
+
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        code += characters[randomIndex];
+       
+        
+    }
+    return code;
+}
+
   return (
     <>
       <div className="relative h-screen w-2/6 flex items-center justify-center">
@@ -16,6 +34,7 @@ const CreateLobby = () => {
             type="text"
             className="text-field"
             placeholder="lobby code will be here"
+            value = {lobbyCode}
             disabled
           />
           <p className="text-2xl my-1">OR</p>

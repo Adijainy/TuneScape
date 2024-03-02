@@ -13,6 +13,11 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Lobby",
   },
+  leader:{
+    type: Boolean,
+    required: true,
+  
+  }
 });
 
 module.exports = mongoose.model("User", userSchema);
