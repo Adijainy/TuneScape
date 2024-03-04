@@ -1,40 +1,31 @@
 const express = require("express");
-const cors = require("cors");
+const axios = require("axios");
+const dotenv = require("dotenv");
+dotenv.config();
+const PORT = process.env.PORT || 3000;
 const app = express();
-
-require("dotenv").config();
-const PORT = process.env.PORT || 4000;
-
-app.use(express.json());
-app.use(cors({
-  origin: "*",
-}))
-const tunesRoutes = require("./routers/tunes");
-app.use("/api/v1", tunesRoutes);
-
-//lets try
-const connectSocket = require("./config/socket");
 const server = require("http").createServer(app);
+server.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
+});
+
 const io = require("socket.io")(server, {
   cors: {
     origin: "*",
   },
 });
 
+//lets try
+const connectSocket = require("./config/socket");
 connectSocket(io);
-
-server.listen(process.env.PORT || 4000, ()=> {
-  console.log(`Server is running on port ${PORT}`);
-})
-
-//start server
-// app.listen(PORT, () => {
-//   console.log(`Server is running on port ${PORT}`);
-// });
 
 //connect to db
 const dbConnect = require("./config/database");
 dbConnect();
+
+//routes
+const tunesRoutes = require("./routers/tunes");
+app.use("/api/v1", tunesRoutes);
 
 //defualt route
 app.get("/", (req, res) => {
