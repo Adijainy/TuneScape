@@ -9,6 +9,7 @@ import ApiTester from "./components/testing/ApiTester";
 import rootReducer from "./reducers/reducers";
 import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
+import Lobby from "./components/core/lobby/Lobby";
 
 const store = configureStore({
   reducer: rootReducer,
@@ -49,7 +50,7 @@ function App() {
       <div className="flex justify-center">
         <video
           src={bgVideo}
-          autoplay="{true}"
+          autoPlay="{true}"
           loop
           muted
           className="absolute -z-10 w-auto min-w-full max-h-full max-w-none "
@@ -72,6 +73,10 @@ const appRouter = createBrowserRouter([
   {
     path: "/joinPublicLobby",
     element: <JoinPublicLobby />,
+  },
+  {
+    path: "/lobbyId:id",
+    element: <Lobby />,
   },
   {
     path: "/testing",
