@@ -12,7 +12,7 @@ const userSlice = createSlice({
     setUser: (state, action) => {
       state.user = action.payload;
     },
-    setLobbyCode(state, action) {
+    setLobbyCode: (state, action) => {
       state.lobbyCode = action.payload;
     },
   },

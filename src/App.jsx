@@ -75,7 +75,7 @@ const appRouter = createBrowserRouter([
     element: <JoinPublicLobby />,
   },
   {
-    path: "/lobbyId:id",
+    path: "/lobbyId/:id",
     element: <Lobby />,
   },
   {
