@@ -1,9 +1,18 @@
 const express = require("express");
 const axios = require("axios");
 const dotenv = require("dotenv");
+const cors = require("cors");
 dotenv.config();
 const PORT = process.env.PORT || 3000;
 const app = express();
+//added all the required middleware
+app.use(express.json());
+app.use(
+  cors({
+    origin: "*",
+  })
+);
+
 const server = require("http").createServer(app);
 server.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
