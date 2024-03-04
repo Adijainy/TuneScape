@@ -1,19 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit";
+
+const initialState = {
+  user: null,
+  lobbyCode: null,
+};
+
 const userSlice = createSlice({
   name: "user",
-  initialState: {
-    user: null,
-    lobbyCode: null,
-  },
+  initialState: initialState,
   reducers: {
-    addUser: (state, action) => {
+    setUser: (state, action) => {
       state.user = action.payload;
     },
-    setLobbyCode: (state, action) => {
+    setLobbyCode(state, action) {
       state.lobbyCode = action.payload;
     },
   },
 });
 
+export const { setUser, setLobbyCode } = userSlice.actions;
 export default userSlice.reducer;
-export const { addUser, setLobbyCode } = userSlice.actions;
