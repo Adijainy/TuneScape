@@ -2,7 +2,13 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import SwitchButton from "./core/SwitchButton";
+import { useDispatch, useSelector } from "react-redux";
+import { nowCreateLobby } from "../services/apis/LobbyOperation";
+import { useNavigate } from "react-router-dom";
 const CreateLobby = () => {
+  const { user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [lobbyCode, setLobbyCode] = useState("");
   const {
     register,
@@ -29,8 +35,9 @@ const CreateLobby = () => {
   }
 
   const handleFormSubmit = (data) => {
-    data.lobbyCode = lobbyCode;
-    console.log(data);
+    data.leader = user._id;
+    data.code = lobbyCode;
+    dispatch(nowCreateLobby(data, navigate));
     reset();
   };
 
@@ -49,7 +56,7 @@ const CreateLobby = () => {
             type="text"
             className="text-field"
             placeholder="Enter lobby name"
-            {...register("lobbyName", { required: true })}
+            {...register("name", { required: true })}
           />
           {errors.lobbyName && (
             <p className="text-red-500 text-base">This field is required</p>

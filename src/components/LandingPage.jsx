@@ -6,6 +6,7 @@ import { avatars } from "../assets/Avatar";
 import { useForm } from "react-hook-form";
 import { createLobby, joinLobby } from "../services/apis/LobbyOperation";
 import { useDispatch } from "react-redux";
+import { setUser } from "../slices/userSlice";
 
 const LandingPage = () => {
   const nameRef = useRef();
@@ -32,7 +33,7 @@ const LandingPage = () => {
     } else {
       //Join Lobby
       data.leader = false;
-      joinLobby(data, navigate);
+      dispatch(joinLobby(data, navigate));
     }
   };
   return (
