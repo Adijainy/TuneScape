@@ -10,7 +10,7 @@ const Lobby = () => {
   const { user } = useSelector((state) => state.user);
   const { lobbyCode } = useSelector((state) => state.user);
 
-  const socket = useMemo(() => io("http://localhost:3000"), []);
+  const socket = useMemo(() => io(`${import.meta.env.VITE_BASE_URL}`), []);
   const [songUrl, setSongUrl] = useState("");
   const [searchSong, setSearchSong] = useState("");
   const [songList, setSongList] = useState([]);
