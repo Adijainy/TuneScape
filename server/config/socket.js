@@ -5,6 +5,11 @@ function connectSocket(io) {
       console.log(reason);
     });
 
+    socket.on("joinRoom", (lobbyCode) => {
+      socket.join(lobbyCode);
+      console.log("Joined room : ", lobbyCode);
+    });
+
     socket.on("playSong", (song) => {
       io.emit("sendSong", song);
     });

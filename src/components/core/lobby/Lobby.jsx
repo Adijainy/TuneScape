@@ -20,6 +20,8 @@ const Lobby = () => {
       console.log(socket.id);
     });
 
+    socket.emit("joinRoom", lobbyCode);
+
     socket.on("sendSong", (song) => {
       console.log("song recieved" + song);
       setSongUrl(song.songUrl);
