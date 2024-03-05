@@ -64,7 +64,7 @@ const Lobby = () => {
       duration: songData.duration.totalMilliseconds,
       songURI: songData.uri,
     };
-    socket.emit("playSong", song);
+    socket.emit("playSong", (song, lobbyCode));
     console.log("Selected Song : ", song);
   };
 

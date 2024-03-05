@@ -10,8 +10,8 @@ function connectSocket(io) {
       console.log("Joined room : ", lobbyCode);
     });
 
-    socket.on("playSong", (song) => {
-      io.emit("sendSong", song);
+    socket.on("playSong", (song, lobbyCode) => {
+      io.to(lobbyCode).emit("sendSong", song);
     });
 
     socket.on("songPlay", (data) => {
