@@ -28,6 +28,7 @@ export function joinLobby(data, navigate) {
         null,
         null
       );
+      dispatch(setLobbyCode(result.data.updateLobby.code));
       navigate("/lobbyId/" + result.data.updateLobby.code);
     } catch (err) {
       console.log(err);
@@ -51,4 +52,20 @@ export function nowCreateLobby(data, navigate) {
       console.log(err);
     }
   };
+}
+
+export async function getLobbyMembers(data) {
+  try {
+    console.log("data", data);
+    const result = await apiConnector(
+      "GET",
+      lobbyEndpoints.GET_LOBBY_MEMBERS,
+      JSON.stringify(data),
+      null,
+      null
+    );
+    return result.data;
+  } catch (err) {
+    console.log(err);
+  }
 }

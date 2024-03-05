@@ -69,10 +69,15 @@ exports.getPublicLobbies = async (req, res) => {
 
 exports.getLobbyMembers = async (req, res) => {
   try {
-    const { lobbyId } = req.body;
-    const lobby = await Lobby.findById(lobbyId).populate("members");
+    console.log("req.body", req.body);
+    const { lobbyCode } = req.body;
+    if (!lobbyCode)
+      return res.status(400).json({ message: "Lobby code is required" });
+    const lobby = await Lobby.findOne({ code: lobbyCode })
+      .populate("members")
+      .exec();
     const lobbyMembers = lobby.members;
-    res.status(200).json(lobbyMembers);
+    res.status(200).json({ data: lobby });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
