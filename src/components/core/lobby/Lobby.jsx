@@ -6,6 +6,7 @@ import { IoSearch } from "react-icons/io5";
 import { searchSongs, getSongURL } from "../../../services/apis/songs";
 
 const Lobby = () => {
+  const audio = useRef(null);
   const { user } = useSelector((state) => state.user);
   const { lobbyCode } = useSelector((state) => state.user);
 
@@ -19,9 +20,9 @@ const Lobby = () => {
       console.log(socket.id);
     });
 
-    socket.on("sendSong", (songurl) => {
-      console.log("song recieved" + songurl);
-      setSongUrl(songurl);
+    socket.on("sendSong", (song) => {
+      console.log("song recieved" + song);
+      setSongUrl(song.songUrl);
     });
 
     socket.on("startPlay", (data) => {
@@ -61,6 +62,7 @@ const Lobby = () => {
       duration: songData.duration.totalMilliseconds,
       songURI: songData.uri,
     };
+    socket.emit("playSong", song);
     console.log("Selected Song : ", song);
   };
 
@@ -70,7 +72,22 @@ const Lobby = () => {
         {/* Show members */}
         <div></div>
         {/* songDetails */}
-        <div></div>
+        <div>
+          <div>
+            <div>
+              <img src="" alt="" />
+            </div>
+            {/* Player  */}
+            <div>
+              <audio
+                ref={audio}
+                src={songUrl}
+                controls={user?.leader ? true : false}
+                autoPlay
+              />
+            </div>
+          </div>
+        </div>
         {/* songList */}
         <div>
           {/* Queue */}
@@ -97,7 +114,7 @@ const Lobby = () => {
               {/* Song List  */}
 
               {songList.length > 0 && (
-                <div className="bg-[#411831] p-3 flex flex-col gap-1 rounded-xl w-[300px]">
+                <div className="bg-[#411831] p-3 flex flex-col gap-1 rounded-xl w-[300px] border-[1px] border-wine-20">
                   {songList.map((song) => (
                     <div
                       key={song.data.id}
