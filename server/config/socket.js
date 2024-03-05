@@ -5,8 +5,8 @@ function connectSocket(io) {
       console.log(reason);
     });
 
-    socket.on("playSong", (songUrl) => {
-      io.emit("sendSong", songUrl);
+    socket.on("playSong", (song) => {
+      io.emit("sendSong", song);
     });
 
     socket.on("songPlay", (data) => {
