@@ -1,6 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { io } from "socket.io-client";
-import { useMemo, useState, useEffect, useRef } from "react";
+
 import bgVideo from "./assets/bg.mp4";
 import LandingPage from "./components/LandingPage";
 import CreateLobby from "./components/CreateLobby";
@@ -16,41 +15,41 @@ const store = configureStore({
 });
 
 function App() {
-  const socket = useMemo(() => io("http://localhost:3000"), []);
-  const [songUrl, setSongUrl] = useState("");
+  // const socket = useMemo(() => io("http://localhost:3000"), []);
+  // const [songUrl, setSongUrl] = useState("");
 
-  useEffect(() => {
-    socket.on("connect", () => {
-      console.log(socket.id);
-    });
+  // useEffect(() => {
+  //   socket.on("connect", () => {
+  //     console.log(socket.id);
+  //   });
 
-    socket.on("sendSong", (songurl) => {
-      console.log("song recieved" + songurl);
-      setSongUrl(songurl);
-    });
+  //   socket.on("sendSong", (songurl) => {
+  //     console.log("song recieved" + songurl);
+  //     setSongUrl(songurl);
+  //   });
 
-    socket.on("startPlay", (data) => {
-      console.log("Playing song : " + data);
-      audio.current.play();
-    });
+  //   socket.on("startPlay", (data) => {
+  //     console.log("Playing song : " + data);
+  //     audio.current.play();
+  //   });
 
-    socket.on("pauseSong", (data) => {
-      console.log("Pausing song : " + data);
-      audio.current.pause();
-    });
+  //   socket.on("pauseSong", (data) => {
+  //     console.log("Pausing song : " + data);
+  //     audio.current.pause();
+  //   });
 
-    return () => {
-      console.log(socket);
-      socket.disconnect();
-    };
-  }, []);
+  //   return () => {
+  //     console.log(socket);
+  //     socket.disconnect();
+  //   };
+  // }, []);
 
   return (
     <Provider store={store}>
       <div className="flex justify-center">
         <video
           src={bgVideo}
-          autoPlay="{true}"
+          autoPlay={false}
           loop
           muted
           className="absolute -z-10 w-auto min-w-full max-h-full max-w-none "
