@@ -4,6 +4,15 @@ import { useMemo, useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { IoSearch } from "react-icons/io5";
 import { searchSongs, getSongURL } from "../../../services/apis/songs";
+import {
+  HiSpeakerWave,
+  HiSpeakerXMark,
+  HiPlay,
+  HiPause,
+  HiPlayCircle,
+  HiPauseCircle,
+} from "react-icons/hi2";
+import { set } from "react-hook-form";
 
 const Lobby = () => {
   const audio = useRef(null);
@@ -14,6 +23,9 @@ const Lobby = () => {
   const [songUrl, setSongUrl] = useState("");
   const [searchSong, setSearchSong] = useState("");
   const [songList, setSongList] = useState([]);
+  const [songDetails, setSongDetails] = useState({});
+  const [isMuted, setIsMuted] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
 
   useEffect(() => {
     socket.on("connect", () => {
@@ -25,6 +37,7 @@ const Lobby = () => {
     socket.on("sendSong", (song) => {
       console.log("song recieved" + song);
       setSongUrl(song.songUrl);
+      setSongDetails(song);
     });
 
     socket.on("startPlay", (data) => {
@@ -64,39 +77,110 @@ const Lobby = () => {
       duration: songData.duration.totalMilliseconds,
       songURI: songData.uri,
     };
-    socket.emit("playSong", (song, lobbyCode));
+    socket.emit("playSong", song, lobbyCode);
     console.log("Selected Song : ", song);
   };
+  //handle mute unmute
+  function handleMuteUnmute() {
+    if (isMuted) {
+      audio.current.muted = false;
+      setIsMuted(false);
+    } else {
+      audio.current.muted = true;
+      setIsMuted(true);
+    }
+  }
+
+  //handle song play and pause
+  function handleSongPlayPause() {
+    if (audio.current.paused) {
+      setIsPlaying(true);
+      console.log("play");
+      socket.emit("songPlay", songDetails);
+    } else {
+      setIsPlaying(false);
+      console.log("pause");
+      socket.emit("songPause", songDetails);
+    }
+  }
 
   return (
-    <div>
-      <div>
+    <div className="w-full h-screen">
+      <div className="flex flex-row justify-between w-full h-full">
         {/* Show members */}
         <div></div>
         {/* songDetails */}
         <div>
           <div>
+            {songDetails?.songName && (
+              <div className="flex flex-row gap-5">
+                <div>
+                  <img
+                    src={songDetails?.songCover}
+                    alt={`This is song album for ${songDetails?.songName}`}
+                    width={100}
+                  />
+                </div>
+                <div>
+                  <h1 className="text-xl font-bold text-wine-15">
+                    {songDetails?.songName}
+                  </h1>
+                  <p className="text-lg text-wine-30 font-semibold">
+                    {songDetails?.artist}
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+          {/* Player  */}
+          <div>
+            {/* Buttons  */}
             <div>
-              <img src="" alt="" />
+              {
+                <button
+                  onClick={() => handleMuteUnmute()}
+                  className="text-wine-5 text-xl"
+                >
+                  {isMuted ? <HiSpeakerXMark /> : <HiSpeakerWave />}
+                </button>
+              }
+              {user?.leader && (
+                <div>
+                  <button
+                    onClick={() => handleSongPlayPause()}
+                    className="text-wine-5 text-xl"
+                  >
+                    {isPlaying && <HiPauseCircle />}
+                    {!isPlaying && <HiPlayCircle />}
+                  </button>
+                </div>
+              )}
             </div>
-            {/* Player  */}
-            <div>
-              <audio
-                ref={audio}
-                src={songUrl}
-                controls={user?.leader ? true : false}
-                autoPlay
-              />
-            </div>
+            <audio
+              ref={audio}
+              src={songUrl}
+              controls={user?.leader ? true : false}
+              autoPlay
+            />
           </div>
         </div>
         {/* songList */}
-        <div>
+        <div className="h-full bg-wine-70 p-8 border-l-2 border-wine-20 grid grid-cols-1 grid-rows-2">
           {/* Queue */}
-          <div></div>
+          <div>
+            <h1 className="text-center text-5xl text-wine-5 font-Jomhuria tracking-wider">
+              Song Queue
+            </h1>
+            {
+              //Show Song queue here
+            }
+          </div>
           {/* Search Song Here  */}
           {user?.leader && (
-            <div>
+            <div className="flex flex-col gap-2">
+              <h1 className="text-center text-5xl text-wine-5 font-Jomhuria tracking-wider">
+                Search Song Here
+              </h1>
               {/* Search Container  */}
               <div className="flex flex-row justify-center items-center">
                 <input
@@ -104,7 +188,7 @@ const Lobby = () => {
                   placeholder="Search Song Here"
                   value={searchSong}
                   onChange={(e) => setSearchSong(e.target.value)}
-                  className="border-2 border-wine-30 bg-wine-70 text-wine-5 px-5 py-3 rounded-l-full"
+                  className="border-2 border-wine-30 bg-wine-70 text-wine-5 px-5 py-3 rounded-l-full placeholder:text-wine-20"
                 />
                 <button
                   onClick={() => handleSearchSong()}
@@ -115,8 +199,8 @@ const Lobby = () => {
               </div>
               {/* Song List  */}
 
-              {songList.length > 0 && (
-                <div className="bg-[#411831] p-3 flex flex-col gap-1 rounded-xl w-[300px] border-[1px] border-wine-20">
+              {songList?.length > 0 && (
+                <div className="bg-[#411831] p-3 flex flex-col gap-1 rounded-xl w-[300px] h-4/5 border-[1px] border-wine-20 overflow-y-scroll">
                   {songList.map((song) => (
                     <div
                       key={song.data.id}
