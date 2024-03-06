@@ -23,6 +23,9 @@ function connectSocket(io) {
       console.log("Pausing song : " + data);
       io.emit("pauseSong", data);
     });
+    socket.on("leaveRoom", (lobbyCode, userLeft) => {
+      io.to(lobbyCode).emit("userLeft", userLeft);
+    });
   });
 }
 

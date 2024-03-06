@@ -16,6 +16,7 @@ exports.createLobby = async (req, res) => {
       { new: true }
     )
       .populate("leader")
+      .populate("members")
       .exec();
     const updateUser = await User.findByIdAndUpdate(
       leader,
@@ -24,9 +25,17 @@ exports.createLobby = async (req, res) => {
     )
       .populate("lobby")
       .exec();
-    res.status(201).json({ updateLobby, updateUser });
+    res.status(201).json({
+      message: "Lobby created successfully",
+      success: true,
+      updateLobby,
+      updateUser,
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
 
