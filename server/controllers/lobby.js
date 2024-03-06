@@ -82,3 +82,23 @@ exports.getLobbyMembers = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+exports.getLobbyInfo = async (req, res) => {
+  try {
+    console.log("req.params", req.params);
+    const { lobbyCode } = req.params;
+    if (!lobbyCode)
+      return res.status(400).json({ message: "Lobby code is required" });
+    const lobby = await Lobby.findOne({ code: lobbyCode })
+      .populate("members")
+      .populate("queue")
+      .exec();
+    res.status(200).json({
+      sucess: true,
+      message: "Lobby returned successfully",
+      data: lobby,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
