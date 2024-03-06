@@ -7,6 +7,7 @@ function connectSocket(io) {
 
     socket.on("joinRoom", (lobbyCode) => {
       socket.join(lobbyCode);
+      io.to(lobbyCode).emit("userJoined", socket.id);
       console.log("Joined room : ", lobbyCode);
     });
 

@@ -56,6 +56,12 @@ const Lobby = () => {
       handleLeaveLobby(data);
     });
 
+    //user joined room event
+    socket.on("userJoined", (data) => {
+      console.log("User Joined : ", data);
+      handleUpdateLobby();
+    });
+
     return () => {
       console.log(socket);
       socket.disconnect();
@@ -118,7 +124,7 @@ const Lobby = () => {
     }
   }
 
-  async function handleUpdateLobby() {
+  function handleUpdateLobby() {
     console.log("Updating lobby");
     dispatch(getLobbyInfo(lobbyCode));
   }
