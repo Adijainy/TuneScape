@@ -5,12 +5,12 @@ exports.getSong = async (req, res) => {
   try {
     const { songId } = req.params;
     if (!songId) {
-      return res.status(400).json({ message: "Song ID is required" });
+      return res.status(201).json({ message: "Song ID is required" });
     }
     const song = await Song.findOne({ songId: songId });
     if (!song) {
       return res
-        .status(300)
+        .status(202)
         .json({ message: "Song not found", success: false });
     }
     return res.status(200).json({
