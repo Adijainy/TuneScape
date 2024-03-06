@@ -23,8 +23,8 @@ function connectSocket(io) {
       console.log("Pausing song : " + data);
       io.emit("pauseSong", data);
     });
-    socket.on("leaveRoom", (lobbyCode) => {
-      io.to(lobbyCode).emit("userLeft", "user left the room");
+    socket.on("leaveRoom", (lobbyCode, userLeft) => {
+      io.to(lobbyCode).emit("userLeft", userLeft);
     });
   });
 }
