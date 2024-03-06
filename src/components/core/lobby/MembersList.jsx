@@ -1,19 +1,16 @@
 import React from "react";
-import { useEffect } from "react";
-import { getLobbyMembers } from "../../../services/apis/LobbyOperation";
-import { useSelector } from "react-redux";
 
-const MembersList = (data) => {
-  const lobbyCode = useSelector((state) => state.user.lobbyCode);
-  console.log(lobbyCode);
-  useEffect(() => {
-    // const formData = new FormData();
-    // formData.append("lobbyCode", lobbyCode);
-    const req = { lobbyCode: lobbyCode };
-    const res = getLobbyMembers(req); //hello copilot how are you?
-    console.log(res);
-  });
-  return <div>lobby members</div>;
+const MembersList = () => {
+  return (
+    <div className="h-full bg-wine-70 p-8 border-r-2 border-wine-20 grid grid-cols-1 grid-rows-2 w-[370px]">
+      <h1 className="text-center text-5xl text-wine-5 font-Jomhuria tracking-wider">
+        Lobby Members
+      </h1>
+      {
+        //Show Lobby members here
+      }
+    </div>
+  );
 };
 
 export default MembersList;

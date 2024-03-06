@@ -13,6 +13,7 @@ import {
   HiPauseCircle,
 } from "react-icons/hi2";
 import { set } from "react-hook-form";
+import MembersList from "./MembersList";
 
 const Lobby = () => {
   const audio = useRef(null);
@@ -108,12 +109,14 @@ const Lobby = () => {
     <div className="w-full h-screen">
       <div className="flex flex-row justify-between w-full h-full">
         {/* Show members */}
-        <div></div>
-        {/* songDetails */}
         <div>
+          <MembersList />
+        </div>
+        {/* songDetails */}
+        <div className="h-fit my-auto bg-wine-50 bg-opacity-80 p-8 rounded-3xl">
           <div>
             {songDetails?.songName && (
-              <div className="flex flex-row gap-5">
+              <div className="flex flex-row gap-5 items-center">
                 <div>
                   <img
                     src={songDetails?.songCover}
@@ -122,10 +125,10 @@ const Lobby = () => {
                   />
                 </div>
                 <div>
-                  <h1 className="text-xl font-bold text-wine-15">
+                  <h1 className="text-xl font-bold text-wine-5">
                     {songDetails?.songName}
                   </h1>
-                  <p className="text-lg text-wine-30 font-semibold">
+                  <p className="text-lg text-wine-5 font-semibold">
                     {songDetails?.artist}
                   </p>
                 </div>
@@ -135,7 +138,7 @@ const Lobby = () => {
           {/* Player  */}
           <div>
             {/* Buttons  */}
-            <div>
+            <div className="flex items-baseline mt-2">
               {
                 <button
                   onClick={() => handleMuteUnmute()}
