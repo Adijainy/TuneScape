@@ -13,4 +13,5 @@ export const lobbyEndpoints = {
   LEAVE_LOBBY_LEADER: `${BASE_URL}/lobby/leave/leader`,
   GET_PUBLIC_LOBBIES: `${BASE_URL}/lobby/public`,
   GET_LOBBY_MEMBERS: `${BASE_URL}/lobby/members`,
+  GET_LOBBY_INFO: `${BASE_URL}/lobby/get=`,
 };

@@ -7,19 +7,19 @@ import { searchSongs, getSongURL } from "../../../services/apis/songs";
 import {
   HiSpeakerWave,
   HiSpeakerXMark,
-  HiPlay,
-  HiPause,
   HiPlayCircle,
   HiPauseCircle,
 } from "react-icons/hi2";
-import { set } from "react-hook-form";
 import MembersList from "./MembersList";
+import { getLobbyInfo } from "../../../services/apis/LobbyOperation";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Lobby = () => {
   const audio = useRef(null);
   const { user } = useSelector((state) => state.user);
   const { lobbyCode } = useSelector((state) => state.user);
-
+  const dispatch = useDispatch();
   const socket = useMemo(() => io(`${import.meta.env.VITE_BASE_URL}`), []);
   const [songUrl, setSongUrl] = useState("");
   const [searchSong, setSearchSong] = useState("");
@@ -27,6 +27,7 @@ const Lobby = () => {
   const [songDetails, setSongDetails] = useState({});
   const [isMuted, setIsMuted] = useState(false);
   const [isPlaying, setIsPlaying] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     socket.on("connect", () => {
@@ -49,6 +50,10 @@ const Lobby = () => {
     socket.on("pauseSong", (data) => {
       console.log("Pausing song : " + data);
       audio.current.pause();
+    });
+
+    socket.on("userLeft", (data) => {
+      handleLeaveLobby(data);
     });
 
     return () => {
@@ -105,12 +110,25 @@ const Lobby = () => {
     }
   }
 
+  async function handleLeaveLobby(data) {
+    if (!data.leader) {
+      handleUpdateLobby();
+    } else {
+      navigate("/");
+    }
+  }
+
+  async function handleUpdateLobby() {
+    console.log("Updating lobby");
+    dispatch(getLobbyInfo(lobbyCode));
+  }
+
   return (
     <div className="w-full h-screen">
       <div className="flex flex-row justify-between w-full h-full">
         {/* Show members */}
         <div>
-          <MembersList />
+          <MembersList socket={socket} />
         </div>
         {/* songDetails */}
         <div className="h-fit my-auto bg-wine-50 bg-opacity-80 p-8 rounded-3xl">
@@ -168,7 +186,7 @@ const Lobby = () => {
           </div>
         </div>
         {/* songList */}
-        <div className="h-full bg-wine-70 p-8 border-l-2 border-wine-20 grid grid-cols-1 grid-rows-2">
+        <div className="h-full w-[370px] bg-wine-70 p-8 border-l-2 border-wine-20 grid grid-cols-1 grid-rows-2">
           {/* Queue */}
           <div>
             <h1 className="text-center text-5xl text-wine-5 font-Jomhuria tracking-wider">
