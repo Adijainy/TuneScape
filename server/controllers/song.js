@@ -10,7 +10,7 @@ exports.getSong = async (req, res) => {
     const song = await Song.findOne({ songId: songId });
     if (!song) {
       return res
-        .status(404)
+        .status(300)
         .json({ message: "Song not found", success: false });
     }
     return res.status(200).json({

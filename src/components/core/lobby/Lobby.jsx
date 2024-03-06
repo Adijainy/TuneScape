@@ -78,9 +78,8 @@ const Lobby = () => {
 
   //handle click on song
   const handleClickOnSong = async (songData) => {
-    const result = await getSongURL(songData.id);
     const song = {
-      songUrl: result.url,
+      // songUrl: result.url,
       songName: songData.name,
       songCover: songData.albumOfTrack.coverArt.sources[0].url,
       ablum: songData.albumOfTrack.name,
@@ -89,6 +88,8 @@ const Lobby = () => {
       duration: songData.duration.totalMilliseconds,
       songURI: songData.uri,
     };
+    const result = await getSongURL(song);
+
     socket.emit("playSong", song, lobbyCode);
     console.log("Selected Song : ", song);
   };
