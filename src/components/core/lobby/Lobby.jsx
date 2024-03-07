@@ -14,6 +14,7 @@ import MembersList from "./MembersList";
 import { getLobbyInfo } from "../../../services/apis/LobbyOperation";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import songDummy from "../../../assets/songDummy.png";
 
 const Lobby = () => {
   const audio = useRef(null);
@@ -90,8 +91,8 @@ const Lobby = () => {
     };
     const result = await getSongURL(song);
 
-    socket.emit("playSong", song, lobbyCode);
-    console.log("Selected Song : ", song);
+    socket.emit("playSong", result, lobbyCode);
+    console.log("Selected Song : ", result);
   };
   //handle mute unmute
   function handleMuteUnmute() {
@@ -138,30 +139,33 @@ const Lobby = () => {
           <MembersList socket={socket} />
         </div>
         {/* songDetails */}
-        <div className="h-fit my-auto bg-wine-50 bg-opacity-80 p-8 rounded-3xl">
-          <div>
-            {songDetails?.songName && (
-              <div className="flex flex-row gap-5 items-center">
-                <div>
-                  <img
-                    src={songDetails?.songCover}
-                    alt={`This is song album for ${songDetails?.songName}`}
-                    width={100}
-                  />
-                </div>
-                <div>
-                  <h1 className="text-xl font-bold text-wine-5">
-                    {songDetails?.songName}
-                  </h1>
-                  <p className="text-lg text-wine-5 font-semibold">
-                    {songDetails?.artist}
-                  </p>
-                </div>
+        <div className="h-full my-auto rounded-3xl flex flex-col justify-evenly">
+          <div className="bg-wine-70 bg-opacity-60 backdrop-blur-sm rounded-lg p-2 pb-3">
+            <div className="flex flex-col justify-center gap-0 items-center">
+              <div className="p-2 rounded-lg">
+                <img
+                  src={
+                    songDetails?.songCover ? songDetails?.songCover : songDummy
+                  }
+                  alt={`This is song album for ${songDetails?.songName}`}
+                  width={200}
+                  className="object-cover rounded-lg"
+                />
               </div>
-            )}
+              <div className="">
+                <h1 className="text-3xl text-wine-5 text-center font-Bangers tracking-widest">
+                  {songDetails?.songName
+                    ? songDetails?.songName
+                    : "Starting soon..."}
+                </h1>
+                <p className="text-lg text-wine-5 font-semibold text-center">
+                  {songDetails?.artist}
+                </p>
+              </div>
+            </div>
           </div>
           {/* Player  */}
-          <div>
+          <div className=" bg-wine-50 bg-opacity-80 p-4 rounded-lg">
             {/* Buttons  */}
             <div className="flex items-baseline mt-2">
               {
@@ -184,12 +188,7 @@ const Lobby = () => {
                 </div>
               )}
             </div>
-            <audio
-              ref={audio}
-              src={songUrl}
-              controls={user?.leader ? true : false}
-              autoPlay
-            />
+            <audio ref={audio} src={songDetails?.songUrl} autoPlay />
           </div>
         </div>
         {/* songList */}
