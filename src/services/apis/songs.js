@@ -55,7 +55,7 @@ export async function getSongURL(song) {
       null
     );
     console.log("ADD SONG RESPONSE: ", addSongResult);
-    return addSongResult.data.data;
+    return addSongResult.data.data.newSong;
   } catch (err) {
     console.log(err);
   }
