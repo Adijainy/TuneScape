@@ -42,9 +42,10 @@ export async function getSongURL(song) {
       null
     );
     console.log("SONG URL RESPONSE: ", result);
-    if (result.status === 200) {
-      song.songUrl = result.data[0];
-    }
+    // if (result.status === 200) {
+    //   song.songUrl = result.data[0];
+    // }
+    song.songUrl = result.data[0].url;
     //api call to db add song
     const addSongResult = await apiConnector(
       "POST",

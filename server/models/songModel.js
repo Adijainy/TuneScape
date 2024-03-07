@@ -9,7 +9,7 @@ const songSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  ablum: {
+  album: {
     type: String,
     required: true,
   },

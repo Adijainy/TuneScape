@@ -25,6 +25,7 @@ exports.getSong = async (req, res) => {
 
 exports.addSong = async (req, res) => {
   try {
+    console.log("req.body", req.body);
     const {
       songName,
       artist,
@@ -35,6 +36,8 @@ exports.addSong = async (req, res) => {
       songURI,
       duration,
     } = req.body;
+
+    console.log(album);
     if (
       !songName ||
       !artist ||
@@ -47,7 +50,7 @@ exports.addSong = async (req, res) => {
     ) {
       return res
         .status(400)
-        .json({ sucess: false, message: "All fields are required user" });
+        .json({ sucess: false, message: "All fields are required" });
     }
     const newSong = await Song.create({
       songName,
