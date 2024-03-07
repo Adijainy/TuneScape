@@ -79,10 +79,10 @@ const Lobby = () => {
   //handle click on song
   const handleClickOnSong = async (songData) => {
     const song = {
-      // songUrl: result.url,
+      songUrl: "",
       songName: songData.name,
       songCover: songData.albumOfTrack.coverArt.sources[0].url,
-      ablum: songData.albumOfTrack.name,
+      album: songData.albumOfTrack.name,
       artist: songData.artists.items[0].profile.name,
       songId: songData.id,
       duration: songData.duration.totalMilliseconds,
