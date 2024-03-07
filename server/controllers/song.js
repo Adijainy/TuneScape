@@ -35,6 +35,7 @@ exports.addSong = async (req, res) => {
       songId,
       songURI,
       duration,
+      lobbyCode,
     } = req.body;
 
     console.log(album);
@@ -46,7 +47,8 @@ exports.addSong = async (req, res) => {
       !songUrl ||
       !songId ||
       !songURI ||
-      !duration
+      !duration ||
+      !lobbyCode
     ) {
       return res
         .status(400)
@@ -62,10 +64,20 @@ exports.addSong = async (req, res) => {
       songURI,
       duration,
     });
+    const lobby = await Lobby.findOne({ code: lobbyCode });
+    const updateLobby = await Lobby.findByIdAndUpdate(
+      lobby._id,
+      { $push: { queue: newSong._id } },
+      { new: true }
+    )
+      .populate("queue")
+      .populate("members")
+      .exec();
     return res.status(201).json({
       success: true,
-      message: "Song added successfully",
-      data: newSong,
+      message:
+        "Song added successfully in db and added in lobby queue successfully",
+      data: { newSong, updateLobby },
     });
   } catch (err) {
     return res.status(500).json({ message: err.message });
