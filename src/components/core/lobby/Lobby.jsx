@@ -193,10 +193,10 @@ const Lobby = () => {
           </div>
         </div>
         {/* songList */}
-        <div className="h-full w-[370px] bg-wine-70 p-8 border-l-2 border-wine-20 grid grid-cols-1 grid-rows-2">
+        <div className="h-full w-[337px] bg-wine-70 p-8 border-l-2 border-wine-20 grid grid-cols-1 grid-rows-2">
           {/* Queue */}
           <div>
-            <h1 className="text-center text-5xl text-wine-5 font-Jomhuria tracking-wider">
+            <h1 className="text-center text-[2.7rem] text-wine-5 font-Jomhuria tracking-wider">
               Song Queue
             </h1>
             {
@@ -206,7 +206,7 @@ const Lobby = () => {
           {/* Search Song Here  */}
           {user?.leader && (
             <div className="flex flex-col gap-2">
-              <h1 className="text-center text-5xl text-wine-5 font-Jomhuria tracking-wider">
+              <h1 className="text-center text-[2.7rem] text-wine-5 font-Jomhuria tracking-wider">
                 Search Song Here
               </h1>
               {/* Search Container  */}

@@ -5,6 +5,7 @@ import SwitchButton from "./core/SwitchButton";
 import { useDispatch, useSelector } from "react-redux";
 import { nowCreateLobby } from "../services/apis/LobbyOperation";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 const CreateLobby = () => {
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
@@ -70,8 +71,26 @@ const CreateLobby = () => {
             disabled
           />
           <p className="text-2xl my-1">OR</p>
-          <button className="bg-[#411831] border-4 border-[#811B60] p-1 w-full tracking-wider mb-4 hover:bg-[#811B60]">
-            Copy URL
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              navigator.clipboard.writeText(`${lobbyCode}`);
+              toast.success("Lobby Code Copied!", {
+                style: {
+                  backgroundColor: "#411831",
+                  color: " #E4BCDE",
+                  fontWeight: "bold",
+                },
+                iconTheme: {
+                  primary: "#E4BCDE",
+                  secondary: "#411831",
+                },
+              });
+            }}
+            className="bg-[#411831] border-4 border-[#811B60] w-full tracking-wider mb-4 hover:bg-[#811B60]"
+          >
+            Copy Lobby Code
           </button>
           <button className="btn-purple" type="submit">
             Create Lobby!

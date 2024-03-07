@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
+import { Toaster } from "react-hot-toast";
 import bgVideo from "./assets/bg.mp4";
 import LandingPage from "./components/LandingPage";
 import CreateLobby from "./components/CreateLobby";
@@ -15,47 +15,19 @@ const store = configureStore({
 });
 
 function App() {
-  // const socket = useMemo(() => io("http://localhost:3000"), []);
-  // const [songUrl, setSongUrl] = useState("");
-
-  // useEffect(() => {
-  //   socket.on("connect", () => {
-  //     console.log(socket.id);
-  //   });
-
-  //   socket.on("sendSong", (songurl) => {
-  //     console.log("song recieved" + songurl);
-  //     setSongUrl(songurl);
-  //   });
-
-  //   socket.on("startPlay", (data) => {
-  //     console.log("Playing song : " + data);
-  //     audio.current.play();
-  //   });
-
-  //   socket.on("pauseSong", (data) => {
-  //     console.log("Pausing song : " + data);
-  //     audio.current.pause();
-  //   });
-
-  //   return () => {
-  //     console.log(socket);
-  //     socket.disconnect();
-  //   };
-  // }, []);
-
   return (
     <Provider store={store}>
-      <div className="flex justify-center">
+      <div className="flex justify-center overflow-x-hidden">
         <video
           src={bgVideo}
           autoPlay={false}
           loop
           muted
-          className="absolute -z-10 w-auto min-w-full max-h-full max-w-none "
+          className="absolute -z-10 w-[100vw] h-[100vh] object-cover"
         ></video>
         <RouterProvider router={appRouter} />
       </div>
+      <Toaster />
     </Provider>
   );
 }

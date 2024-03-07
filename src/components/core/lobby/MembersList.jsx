@@ -20,9 +20,9 @@ const MembersList = ({ socket }) => {
     socket.emit("leaveRoom", tempLobbyCode, tempUser);
   };
   return (
-    <div className="h-full bg-wine-70 p-8 border-r-2 border-wine-20 w-[370px] flex flex-col justify-between">
+    <div className="h-full bg-wine-70 p-8 border-r-2 border-wine-20 w-[340px] flex flex-col justify-between">
       <div>
-        <h1 className="text-center text-5xl text-wine-5 font-Jomhuria tracking-wider">
+        <h1 className="text-center text-[2.7rem] text-wine-5 font-Jomhuria tracking-wider">
           Lobby Members
         </h1>
         {
@@ -36,7 +36,7 @@ const MembersList = ({ socket }) => {
                 >
                   <div className="relative">
                     {member?.leader && (
-                      <FaCrown className="text-4xl text-wine-20 absolute -rotate-12 -top-5 " />
+                      <FaCrown className="text-3xl text-wine-20 absolute -rotate-12 -top-5 " />
                     )}
                     <img
                       src={member?.avatar}
@@ -45,7 +45,7 @@ const MembersList = ({ socket }) => {
                     />
                   </div>
                   <div>
-                    <h1 className="text-4xl font-Jomhuria tracking-wider text-wine-5">
+                    <h1 className="text-3xl font-Jomhuria tracking-wider text-wine-5">
                       {member.username}
                     </h1>
                   </div>
@@ -57,7 +57,7 @@ const MembersList = ({ socket }) => {
       </div>
       <div>
         <button
-          className="btn-purple p-3 font-Jomhuria text-wine-5 text-4xl tracking-wider rounded-md "
+          className="btn-purple p-1 font-Jomhuria text-wine-5 text-3xl tracking-wider rounded-md "
           onClick={handleLeaveLobby}
         >
           Leave Lobby

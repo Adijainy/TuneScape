@@ -6,14 +6,14 @@
 
 @layer components {
   .text-field {
-    @apply bg-wine-50 p-1 w-full rounded-md text-white text-3xl tracking-wider font-Jomhuria text-center;
+    @apply bg-wine-50 w-full rounded-md text-white text-[1.6rem] tracking-wider font-Jomhuria text-center;
   }
   .text-box {
-    @apply mx-auto bg-wine-70 rounded-3xl mt-6 p-6 text-center shadow-lg shadow-wine-5 text-white text-3xl tracking-wider font-Jomhuria;
+    @apply mx-auto bg-wine-70 rounded-3xl p-6 text-center shadow-lg shadow-wine-5 text-white text-[1.6rem] tracking-wider font-Jomhuria;
   }
 
   .btn-purple {
-    @apply bg-wine-30 p-1 w-full tracking-wider hover:bg-wine-20;
+    @apply bg-wine-30 w-full tracking-wider hover:bg-wine-20;
   }
 
   .avatar-style {
