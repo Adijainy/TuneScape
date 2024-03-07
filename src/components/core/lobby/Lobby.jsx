@@ -5,17 +5,12 @@ import { useMemo, useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { IoSearch } from "react-icons/io5";
 import { searchSongs, getSongURL } from "../../../services/apis/songs";
-import {
-  HiSpeakerWave,
-  HiSpeakerXMark,
-  HiPlayCircle,
-  HiPauseCircle,
-} from "react-icons/hi2";
 import MembersList from "./MembersList";
 import { getLobbyInfo } from "../../../services/apis/LobbyOperation";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import songDummy from "../../../assets/songDummy.png";
+import Player from "./player/Player";
 
 const Lobby = () => {
   const audio = useRef(null);
@@ -23,7 +18,6 @@ const Lobby = () => {
   const { lobbyCode } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const socket = useMemo(() => io(`${import.meta.env.VITE_BASE_URL}`), []);
-  const [songUrl, setSongUrl] = useState("");
   const [searchSong, setSearchSong] = useState("");
   const [songList, setSongList] = useState([]);
   const [songDetails, setSongDetails] = useState({});
@@ -40,7 +34,6 @@ const Lobby = () => {
 
     socket.on("sendSong", (song) => {
       console.log("song recieved" + song);
-      setSongUrl(song.songUrl);
       setSongDetails(song);
     });
 
@@ -142,8 +135,8 @@ const Lobby = () => {
           <MembersList socket={socket} />
         </div>
         {/* songDetails */}
-        <div className="h-full my-auto rounded-3xl flex flex-col justify-evenly">
-          <div className="bg-wine-70 bg-opacity-60 backdrop-blur-sm rounded-lg p-2 pb-3">
+        <div className="h-full my-auto rounded-3xl flex flex-col items-center justify-evenly min-w-[600px]">
+          <div className="bg-wine-70 bg-opacity-60 backdrop-blur-sm rounded-lg p-2 pb-3 w-fit">
             <div className="flex flex-col justify-center gap-0 items-center">
               <div className="p-2 rounded-lg">
                 <img
@@ -168,29 +161,14 @@ const Lobby = () => {
             </div>
           </div>
           {/* Player  */}
-          <div className=" bg-wine-50 bg-opacity-80 p-4 rounded-lg">
-            {/* Buttons  */}
-            <div className="flex items-baseline mt-2">
-              {
-                <button
-                  onClick={() => handleMuteUnmute()}
-                  className="text-wine-5 text-xl"
-                >
-                  {isMuted ? <HiSpeakerXMark /> : <HiSpeakerWave />}
-                </button>
-              }
-              {user?.leader && (
-                <div>
-                  <button
-                    onClick={() => handleSongPlayPause()}
-                    className="text-wine-5 text-xl"
-                  >
-                    {isPlaying && <HiPauseCircle />}
-                    {!isPlaying && <HiPlayCircle />}
-                  </button>
-                </div>
-              )}
-            </div>
+          <div className=" bg-wine-50 bg-opacity-80 p-4 rounded-lg w-full">
+            <Player
+              audio={audio}
+              song={songDetails}
+              handlePausePlay={() => handleSongPlayPause()}
+              isPlaying={isPlaying}
+            />
+
             <audio ref={audio} src={songDetails?.songUrl} autoPlay />
           </div>
         </div>
