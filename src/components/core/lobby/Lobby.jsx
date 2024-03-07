@@ -1,4 +1,5 @@
 import React from "react";
+import "./ScrollBar.css";
 import { io } from "socket.io-client";
 import { useMemo, useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
@@ -66,6 +67,7 @@ const Lobby = () => {
     return () => {
       console.log(socket);
       socket.disconnect();
+      handleLeaveLobby(user._id);
     };
   }, []);
   // useEffect(() => {
@@ -88,6 +90,7 @@ const Lobby = () => {
       songId: songData.id,
       duration: songData.duration.totalMilliseconds,
       songURI: songData.uri,
+      lobbyCode: lobbyCode,
     };
     const result = await getSongURL(song);
 
@@ -215,6 +218,12 @@ const Lobby = () => {
                   placeholder="Search Song Here"
                   value={searchSong}
                   onChange={(e) => setSearchSong(e.target.value)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      event.preventDefault(); // Prevent form submission
+                      handleSearchSong();
+                    }
+                  }}
                   className="border-2 border-wine-30 bg-wine-70 text-wine-5 px-5 py-3 rounded-l-full placeholder:text-wine-20"
                 />
                 <button
@@ -227,7 +236,10 @@ const Lobby = () => {
               {/* Song List  */}
 
               {songList?.length > 0 && (
-                <div className="bg-[#411831] p-3 flex flex-col gap-1 rounded-xl w-[300px] h-4/5 border-[1px] border-wine-20 overflow-y-scroll">
+                <div
+                  id="scrollBar"
+                  className="bg-[#411831] p-3 flex flex-col gap-1 rounded-xl w-[280px] h-4/5 border-[1px] border-wine-20 border-r-0 overflow-y-scroll"
+                >
                   {songList.map((song) => (
                     <div
                       key={song.data.id}
