@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import songDummy from "../../../assets/songDummy.png";
 import Player from "./player/Player";
+import QueueList from "./QueueList";
 
 const Lobby = () => {
   const audio = useRef(null);
@@ -35,6 +36,7 @@ const Lobby = () => {
     socket.on("sendSong", (song) => {
       console.log("song recieved" + song);
       setSongDetails(song);
+      handleUpdateLobby();
     });
 
     socket.on("startPlay", (data) => {
@@ -90,16 +92,6 @@ const Lobby = () => {
     socket.emit("playSong", result, lobbyCode);
     console.log("Selected Song : ", result);
   };
-  //handle mute unmute
-  function handleMuteUnmute() {
-    if (isMuted) {
-      audio.current.muted = false;
-      setIsMuted(false);
-    } else {
-      audio.current.muted = true;
-      setIsMuted(true);
-    }
-  }
 
   //handle song play and pause
   function handleSongPlayPause() {
@@ -179,9 +171,7 @@ const Lobby = () => {
             <h1 className="text-center text-[2.7rem] text-wine-5 font-Jomhuria tracking-wider">
               Song Queue
             </h1>
-            {
-              //Show Song queue here
-            }
+            {<QueueList />}
           </div>
           {/* Search Song Here  */}
           {user?.leader && (
