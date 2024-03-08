@@ -9,6 +9,7 @@ export function createLobby(data, navigate) {
     try {
       const user = await createUser(data);
       dispatch(setUser(user));
+      localStorage.setItem("user", JSON.stringify(user));
       navigate("/createLobby");
     } catch (err) {
       console.log(err);
@@ -21,6 +22,7 @@ export function joinLobby(data, navigate) {
     try {
       const user = await createUser(data);
       dispatch(setUser(user));
+      localStorage.setItem("user", JSON.stringify(user));
       data.userId = user._id;
       const result = await apiConnector(
         "POST",
@@ -30,7 +32,23 @@ export function joinLobby(data, navigate) {
         null
       );
       dispatch(setLobbyInfo(result.data.updateLobby));
+      localStorage.setItem(
+        "lobbyID",
+        JSON.stringify(result.data.updateLobby._id)
+      );
+      localStorage.setItem(
+        "lobbyMembers",
+        JSON.stringify(result.data.updateLobby.members)
+      );
+      localStorage.setItem(
+        "lobbyQueue",
+        JSON.stringify(result.data.updateLobby.queue)
+      );
       dispatch(setLobbyCode(result.data.updateLobby.code));
+      localStorage.setItem(
+        "lobbyCode",
+        JSON.stringify(result.data.updateLobby.code)
+      );
       navigate("/lobbyId/" + result.data.updateLobby.code);
     } catch (err) {
       console.log(err);
@@ -50,6 +68,18 @@ export function nowCreateLobby(data, navigate) {
       );
       console.log("CREATE LOBBY RESPONSE: ", result.data);
       dispatch(setLobbyInfo(result.data.updateLobby));
+      localStorage.setItem(
+        "lobbyID",
+        JSON.stringify(result.data.updateLobby._id)
+      );
+      localStorage.setItem(
+        "lobbyMembers",
+        JSON.stringify(result.data.updateLobby.members)
+      );
+      localStorage.setItem(
+        "lobbyQueue",
+        JSON.stringify(result.data.updateLobby.queue)
+      );
       dispatch(setLobbyCode(result.data.updateLobby.code));
       navigate("/lobbyId/" + result.data.updateLobby.code);
     } catch (err) {
@@ -90,6 +120,7 @@ export function leaveLobby(data, navigate) {
         null
       );
       dispatch(setUser({}));
+      localStorage.clear();
       dispatch(setLobbyInfo({}));
       navigate("/");
     } catch (err) {

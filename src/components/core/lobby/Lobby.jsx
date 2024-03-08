@@ -128,7 +128,7 @@ const Lobby = () => {
         </div>
         {/* songDetails */}
         <div className="h-full my-auto rounded-3xl flex flex-col items-center justify-evenly min-w-[600px]">
-          <div className="bg-wine-70 bg-opacity-60 backdrop-blur-sm rounded-lg p-2 pb-3 w-fit">
+          <div className="bg-wine-70 bg-opacity-60 backdrop-blur-sm rounded-lg p-2 pb-3 w-fit max-w-64">
             <div className="flex flex-col justify-center gap-0 items-center">
               <div className="p-2 rounded-lg">
                 <img
@@ -141,7 +141,7 @@ const Lobby = () => {
                 />
               </div>
               <div className="">
-                <h1 className="text-3xl text-wine-5 text-center font-Bangers tracking-widest">
+                <h1 className="text-3xl text-wine-5 text-center font-Bangers tracking-widest line-clamp-1">
                   {songDetails?.songName
                     ? songDetails?.songName
                     : "Starting soon..."}
@@ -153,7 +153,7 @@ const Lobby = () => {
             </div>
           </div>
           {/* Player  */}
-          <div className=" bg-wine-50 bg-opacity-80 p-4 rounded-lg w-full">
+          <div className=" bg-wine-50 bg-opacity-80 backdrop-blur-sm p-4 rounded-lg w-full">
             <Player
               audio={audio}
               song={songDetails}
@@ -165,14 +165,11 @@ const Lobby = () => {
           </div>
         </div>
         {/* songList */}
-        <div className="h-full w-[337px] bg-wine-70 p-8 border-l-2 border-wine-20 grid grid-cols-1 grid-rows-2">
-          {/* Queue */}
-          <div>
-            <h1 className="text-center text-[2.7rem] text-wine-5 font-Jomhuria tracking-wider">
-              Song Queue
-            </h1>
-            {<QueueList />}
-          </div>
+        <div
+          className={`h-full w-[337px] bg-wine-70 p-8 border-l-2 border-wine-20 grid grid-cols-1 ${
+            user?.leader ? " grid-rows-2" : "grid-rows-1"
+          }`}
+        >
           {/* Search Song Here  */}
           {user?.leader && (
             <div className="flex flex-col gap-2">
@@ -221,7 +218,7 @@ const Lobby = () => {
                           className="w-[30px] h-[30px] rounded"
                         />
                       </div>
-                      <div>
+                      <div className="w-4/5">
                         <h1 className="text-white text-xs line-clamp-1">
                           {song.data.name}
                         </h1>
@@ -235,6 +232,14 @@ const Lobby = () => {
               )}
             </div>
           )}
+
+          {/* Queue */}
+          <div>
+            <h1 className="text-center text-[2.7rem] text-wine-5 font-Jomhuria tracking-wider">
+              Song Queue
+            </h1>
+            {<QueueList />}
+          </div>
         </div>
       </div>
     </div>

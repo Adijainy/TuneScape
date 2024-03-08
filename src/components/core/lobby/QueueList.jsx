@@ -14,14 +14,14 @@ const QueueList = () => {
             key={song.songId}
             className="flex gap-3 transition-all duration-150 hover:bg-[#811B60] p-1 rounded-md cursor-pointer"
           >
-            <div>
+            <div className="">
               <img
                 src={song.songCover}
                 alt={`cover at of ${song.songName}`}
-                className="w-[30px] h-[30px] rounded"
+                className="w-[30px] h-[30px] object-cover rounded"
               />
             </div>
-            <div>
+            <div className="w-4/5">
               <h1 className="text-white text-xs line-clamp-1">
                 {song.songName}
               </h1>
