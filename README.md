@@ -69,19 +69,19 @@ Before installing the application, ensure you have the following tools installed
 4. **Main Folder Environment Setup**
    In the main folder, create a .env file and add the following variables:
 
-```plaintext
-VITE_RAPID_API_KEY={your_own_api_key}
-VITE_RAPID_API_HOST={the_rapid_api_host}
-VITE_BASE_URL={backend_url}
-```
+   ```plaintext
+   VITE_RAPID_API_KEY={your_own_api_key}
+   VITE_RAPID_API_HOST={the_rapid_api_host}
+   VITE_BASE_URL={backend_url}
+   ```
 
 5. **Server Folder Environment Setup**
    In the server folder, create a .env file and add the following variables:
 
-```plaintext
-PORT={port_number}
-DATABASE_URL={mongodb_url}
-```
+   ```plaintext
+   PORT={port_number}
+   DATABASE_URL={mongodb_url}
+   ```
 
 6. **Start the application:**
 
