@@ -32,3 +32,106 @@ Tunescape is a music streaming application designed to bring people together thr
 
 - #### **Listener Mode**
   Participants in the lobby who are not designated as leaders have limited control and can only tune in to the synchronized music playback. This ensures a cohesive listening experience without the risk of interference from multiple users.
+
+## Installation Instructions
+
+### Prerequisites
+
+Before installing the application, ensure you have the following tools installed:
+
+- Node.js and npm (or yarn)
+
+### Installation Steps
+
+1. **Fork the repository:**
+   Navigate to the project repository on GitHub at [TuneScape](https://github.com/Adijainy/TuneScape) and click the "Fork" button. This will create a copy of the repository in your own GitHub account.
+
+2. **Clone the repository locally:**
+   Open your terminal and navigate to the directory where you want to work on the project. Then, use the `git clone` command to clone your forked repository, replacing `<your-username>` with your actual GitHub username:
+
+   ```bash
+   git clone https://github.com/<your-username>/TuneScape.git
+   ```
+
+3. **Install dependencies:**
+   Navigate into the project directory:
+
+   ```bash
+   cd TuneScape
+   ```
+
+   Install dependencies for both the client and server applications:
+
+   ```bash
+   npm install
+   ```
+
+4. **Main Folder Environment Setup**
+   In the main folder, create a .env file and add the following variables:
+
+```plaintext
+VITE_RAPID_API_KEY={your_own_api_key}
+VITE_RAPID_API_HOST={the_rapid_api_host}
+VITE_BASE_URL={backend_url}
+```
+
+5. **Server Folder Environment Setup**
+   In the server folder, create a .env file and add the following variables:
+
+```plaintext
+PORT={port_number}
+DATABASE_URL={mongodb_url}
+```
+
+6. **Start the application:**
+
+   - **Client Application:**
+     Start the development server:
+
+     ```bash
+     npm run dev
+     ```
+
+   - **Server Application:**
+     Navigate to the server directory:
+
+     ```bash
+     cd server
+     ```
+
+     Start the server:
+
+     ```bash
+     npm run dev
+     ```
+
+**Additional Notes:**
+
+- For production deployment, additional configuration steps might be necessary depending on your chosen hosting environment.
+- Ensure you replace `<your-username>` in the clone command with your actual GitHub username.
+
+Following these steps should successfully set up your local development environment for the EcoQuest application.
+
+## Additional Dependencies or Libraries Used
+
+By running `npm install` in both the `main` and `server` directories, you can automatically install the following additional dependencies:
+
+**Client-Side:**
+
+- `axios`
+- `react-hook-form`
+- `react-icons`
+- `react-router-dom`
+- `react-hot-toast`
+- `react-redux`
+- `redux-toolkit`
+- `socket.io-client`
+
+**Server-Side:**
+
+- `cors`
+- `dotenv`
+- `express`
+- `mongoose`
+- `nodemon`
+- `socket.io`
