@@ -1,8 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  user: null,
-  lobbyCode: null,
+  user: localStorage.getItem("user")
+    ? JSON.parse(localStorage.getItem("user"))
+    : null,
+  lobbyCode: localStorage.getItem("lobbyCode")
+    ? JSON.parse(localStorage.getItem("lobbyCode"))
+    : null,
 };
 
 const userSlice = createSlice({

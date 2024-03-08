@@ -4,8 +4,15 @@ const Lobby = require("../models/lobbyModel");
 exports.getSong = async (req, res) => {
   try {
     const { songId } = req.params;
+    const { lobbyCode } = req.body;
     if (!songId) {
       return res.status(201).json({ message: "Song ID is required" });
+    }
+    if (!lobbyCode) {
+      return res.status(201).json({
+        success: false,
+        message: "Lobby code is required",
+      });
     }
     const song = await Song.findOne({ songId: songId });
     if (!song) {
@@ -13,6 +20,15 @@ exports.getSong = async (req, res) => {
         .status(202)
         .json({ message: "Song not found", success: false });
     }
+    const lobby = await Lobby.findOne({ code: lobbyCode });
+    const updateLobby = await Lobby.findByIdAndUpdate(
+      lobby._id,
+      { $push: { queue: newSong._id } },
+      { new: true }
+    )
+      .populate("queue")
+      .populate("members")
+      .exec();
     return res.status(200).json({
       sucess: true,
       message: "Song returned successfully",

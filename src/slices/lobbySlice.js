@@ -3,10 +3,19 @@ import { createSlice } from "@reduxjs/toolkit";
 const lobbySlice = createSlice({
   name: "lobby",
   initialState: {
-    lobbyID: null,
-    lobbyCode: null,
-    lobbyMembers: [],
-    lobbyQueue: [],
+    lobbyID: localStorage.getItem("lobbyID")
+      ? JSON.parse(localStorage.getItem("lobbyID"))
+      : null,
+    lobbyCode: localStorage.getItem("lobbyCode")
+      ? JSON.parse(localStorage.getItem("lobbyCode"))
+      : null,
+    lobbyMembers: localStorage.getItem("lobbyMembers")
+      ? JSON.parse(localStorage.getItem("lobbyMembers"))
+      : [],
+    lobbyQueue: localStorage.getItem("lobbyQueue")
+      ? JSON.parse(localStorage.getItem("lobbyQueue"))
+      : [],
+    index: 0,
   },
   reducers: {
     setLobbyInfo: (state, action) => {
@@ -21,6 +30,9 @@ const lobbySlice = createSlice({
     updateLobbyMembers: (state, action) => {
       state.lobbyMembers = action.payload;
     },
+    setIndex: (state, action) => {
+      state.index = action.payload;
+    },
   },
 });
 
@@ -29,4 +41,5 @@ export const {
   setLobbyInfo,
   updateLobbyMembers,
   updateLobbyQueue,
+  setIndex,
 } = lobbySlice.actions;

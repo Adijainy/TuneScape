@@ -9,7 +9,14 @@ import {
   TbPlayerSkipForwardFilled,
 } from "react-icons/tb";
 
-const Player = ({ audio, song, handlePausePlay, isPlaying }) => {
+const Player = ({
+  audio,
+  song,
+  handlePausePlay,
+  isPlaying,
+  handleChangeSong,
+  handlePrevSong,
+}) => {
   const { user } = useSelector((state) => state.user);
   const [volume, setVolume] = useState(0.5);
   const [timeStamp, setTimeStamp] = useState(0);
@@ -43,6 +50,7 @@ const Player = ({ audio, song, handlePausePlay, isPlaying }) => {
                 className="text-2xl text-wine-5"
                 onClick={(e) => {
                   e.preventDefault();
+                  handlePrevSong();
                 }}
               >
                 <TbPlayerSkipBackFilled />
@@ -60,6 +68,7 @@ const Player = ({ audio, song, handlePausePlay, isPlaying }) => {
                 className="text-2xl text-wine-5"
                 onClick={(e) => {
                   e.preventDefault();
+                  handleChangeSong();
                 }}
               >
                 <TbPlayerSkipForwardFilled />

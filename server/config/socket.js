@@ -27,6 +27,12 @@ function connectSocket(io) {
     socket.on("leaveRoom", (lobbyCode, userLeft) => {
       io.to(lobbyCode).emit("userLeft", userLeft);
     });
+    socket.on("changeSong", (lobbyCode, index) => {
+      io.to(lobbyCode).emit("nextSong", index);
+    });
+    socket.on("changeSongPrev", (lobbyCode, index) => {
+      io.to(lobbyCode).emit("prevSong", index);
+    });
   });
 }
 

@@ -11,6 +11,8 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import songDummy from "../../../assets/songDummy.png";
 import Player from "./player/Player";
+import QueueList from "./QueueList";
+import { setIndex } from "../../../slices/lobbySlice";
 
 const Lobby = () => {
   const audio = useRef(null);
@@ -25,6 +27,10 @@ const Lobby = () => {
   const [isPlaying, setIsPlaying] = useState(true);
   const navigate = useNavigate();
 
+  //bulding the queue functionality
+  const { index } = useSelector((state) => state.lobby);
+  const { lobbyQueue } = useSelector((state) => state.lobby);
+
   useEffect(() => {
     socket.on("connect", () => {
       console.log(socket.id);
@@ -34,7 +40,8 @@ const Lobby = () => {
 
     socket.on("sendSong", (song) => {
       console.log("song recieved" + song);
-      setSongDetails(song);
+      //setSongDetails(song);
+      handleUpdateLobby();
     });
 
     socket.on("startPlay", (data) => {
@@ -55,6 +62,20 @@ const Lobby = () => {
     socket.on("userJoined", (data) => {
       console.log("User Joined : ", data);
       handleUpdateLobby();
+    });
+    //next song event
+    socket.on("nextSong", (index) => {
+      console.log("NEXT SONG", lobbyCode?.length);
+      if (lobbyQueue?.length > index + 1) {
+        dispatch(setIndex(index + 1));
+      }
+    });
+
+    //prev song event
+    socket.on("prevSong", (index) => {
+      if (index > 0) {
+        dispatch(setIndex(index - 1));
+      }
     });
 
     return () => {
@@ -90,16 +111,6 @@ const Lobby = () => {
     socket.emit("playSong", result, lobbyCode);
     console.log("Selected Song : ", result);
   };
-  //handle mute unmute
-  function handleMuteUnmute() {
-    if (isMuted) {
-      audio.current.muted = false;
-      setIsMuted(false);
-    } else {
-      audio.current.muted = true;
-      setIsMuted(true);
-    }
-  }
 
   //handle song play and pause
   function handleSongPlayPause() {
@@ -127,6 +138,14 @@ const Lobby = () => {
     dispatch(getLobbyInfo(lobbyCode));
   }
 
+  function handleChangeSong() {
+    socket.emit("changeSong", lobbyCode, index);
+  }
+  function handlePrevSong() {
+    console.log("PREV SONG");
+    socket.emit("changeSongPrev", lobbyCode, index);
+  }
+
   return (
     <div className="w-full h-screen">
       <div className="flex flex-row justify-between w-full h-full">
@@ -136,53 +155,62 @@ const Lobby = () => {
         </div>
         {/* songDetails */}
         <div className="h-full my-auto rounded-3xl flex flex-col items-center justify-evenly min-w-[600px]">
-          <div className="bg-wine-70 bg-opacity-60 backdrop-blur-sm rounded-lg p-2 pb-3 w-fit">
+          <div className="bg-wine-70 bg-opacity-60 backdrop-blur-sm rounded-lg p-2 pb-3 w-fit max-w-64">
             <div className="flex flex-col justify-center gap-0 items-center">
               <div className="p-2 rounded-lg">
                 <img
                   src={
-                    songDetails?.songCover ? songDetails?.songCover : songDummy
+                    lobbyQueue[index]?.songCover
+                      ? lobbyQueue[index]?.songCover
+                      : songDummy
                   }
-                  alt={`This is song album for ${songDetails?.songName}`}
+                  alt={`This is song album for ${lobbyQueue[index]?.songName}`}
                   width={200}
                   className="object-cover rounded-lg"
                 />
               </div>
               <div className="">
-                <h1 className="text-3xl text-wine-5 text-center font-Bangers tracking-widest">
-                  {songDetails?.songName
-                    ? songDetails?.songName
+                <h1 className="text-3xl text-wine-5 text-center font-Bangers tracking-widest line-clamp-1">
+                  {lobbyQueue[index]?.songName
+                    ? lobbyQueue[index]?.songName
                     : "Starting soon..."}
                 </h1>
                 <p className="text-lg text-wine-5 font-semibold text-center">
-                  {songDetails?.artist}
+                  {lobbyQueue[index]?.artist}
                 </p>
               </div>
             </div>
           </div>
           {/* Player  */}
-          <div className=" bg-wine-50 bg-opacity-80 p-4 rounded-lg w-full">
+          <div className=" bg-wine-50 bg-opacity-80 backdrop-blur-sm p-4 rounded-lg w-full">
             <Player
               audio={audio}
-              song={songDetails}
+              song={lobbyQueue[index]}
               handlePausePlay={() => handleSongPlayPause()}
+              handleChangeSong={() => handleChangeSong()}
+              handlePrevSong={() => handlePrevSong()}
               isPlaying={isPlaying}
             />
 
-            <audio ref={audio} src={songDetails?.songUrl} autoPlay />
+            <audio
+              ref={audio}
+              src={lobbyQueue[index]?.songUrl}
+              autoPlay
+              onEnded={(e) => {
+                e.preventDefault();
+                if (user?.leader) {
+                  handleChangeSong();
+                }
+              }}
+            />
           </div>
         </div>
         {/* songList */}
-        <div className="h-full w-[337px] bg-wine-70 p-8 border-l-2 border-wine-20 grid grid-cols-1 grid-rows-2">
-          {/* Queue */}
-          <div>
-            <h1 className="text-center text-[2.7rem] text-wine-5 font-Jomhuria tracking-wider">
-              Song Queue
-            </h1>
-            {
-              //Show Song queue here
-            }
-          </div>
+        <div
+          className={`h-full w-[337px] bg-wine-70 p-8 border-l-2 border-wine-20 grid grid-cols-1 ${
+            user?.leader ? " grid-rows-2" : "grid-rows-1"
+          }`}
+        >
           {/* Search Song Here  */}
           {user?.leader && (
             <div className="flex flex-col gap-2">
@@ -231,7 +259,7 @@ const Lobby = () => {
                           className="w-[30px] h-[30px] rounded"
                         />
                       </div>
-                      <div>
+                      <div className="w-4/5">
                         <h1 className="text-white text-xs line-clamp-1">
                           {song.data.name}
                         </h1>
@@ -245,6 +273,14 @@ const Lobby = () => {
               )}
             </div>
           )}
+
+          {/* Queue */}
+          <div>
+            <h1 className="text-center text-[2.7rem] text-wine-5 font-Jomhuria tracking-wider">
+              Song Queue
+            </h1>
+            {<QueueList />}
+          </div>
         </div>
       </div>
     </div>
