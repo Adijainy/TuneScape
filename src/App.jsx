@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-import bgVideo from "./assets/bg.mp4";
+import bg from "./assets/bg.png";
 import LandingPage from "./components/LandingPage";
 import CreateLobby from "./components/CreateLobby";
 import JoinPublicLobby from "./components/JoinPublicLobby";
@@ -18,13 +18,10 @@ function App() {
   return (
     <Provider store={store}>
       <div className="flex justify-center overflow-x-hidden">
-        <video
-          src={bgVideo}
-          autoPlay={false}
-          loop
-          muted
+        <img
+          src={bg}
           className="absolute -z-10 w-[100vw] h-[100vh] object-cover"
-        ></video>
+        />
         <RouterProvider router={appRouter} />
       </div>
       <Toaster />

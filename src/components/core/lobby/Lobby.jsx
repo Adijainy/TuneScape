@@ -207,18 +207,18 @@ const Lobby = () => {
         </div>
         {/* songList */}
         <div
-          className={`h-full w-[337px] bg-wine-70 p-8 border-l-2 border-wine-20 grid grid-cols-1 ${
+          className={`h-full w-[337px] bg-wine-70 p-6 border-l-2 border-wine-20 grid grid-cols-1 ${
             user?.leader ? " grid-rows-2" : "grid-rows-1"
           }`}
         >
           {/* Search Song Here  */}
           {user?.leader && (
-            <div className="flex flex-col gap-2">
-              <h1 className="text-center text-[2.7rem] text-wine-5 font-Jomhuria tracking-wider">
+            <div className="flex flex-col">
+              <h1 className="text-center text-[2.6rem] text-wine-5 font-Jomhuria tracking-wider">
                 Search Song Here
               </h1>
               {/* Search Container  */}
-              <div className="flex flex-row justify-center items-center">
+              <div className="flex flex-row justify-center items-center mb-3">
                 <input
                   type="text"
                   placeholder="Search Song Here"
@@ -244,7 +244,7 @@ const Lobby = () => {
               {songList?.length > 0 && (
                 <div
                   id="scrollBar"
-                  className="bg-[#411831] p-3 flex flex-col gap-1 rounded-xl w-[280px] h-4/5 border-[1px] border-wine-20 border-r-0 overflow-y-scroll"
+                  className="bg-[#411831] p-3 flex flex-col gap-1 rounded-xl w-[280px] h-4/5 border-[1px] border-wine-20 overflow-y-scroll"
                 >
                   {songList.map((song) => (
                     <div

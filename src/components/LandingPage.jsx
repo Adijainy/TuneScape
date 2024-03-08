@@ -38,7 +38,7 @@ const LandingPage = () => {
   };
   return (
     <div className="relative mt-10 justify-center flex flex-col ">
-      <h1 className="font-Bangers text-[6.5rem] text-wine-25 drop-shadow-[0.4rem_0rem_0.1px_#E4BCDE] tracking-wider text-center">
+      <h1 className="font-Bangers text-[6.5rem] text-wine-25 drop-shadow-[0.4rem_0rem_0.1px_#E4BCDE] tracking-wider text-center ">
         TuneScape
       </h1>
       <div className="max-w-[60%] w-[75%] text-box">

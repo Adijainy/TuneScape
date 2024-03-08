@@ -20,15 +20,18 @@ const MembersList = ({ socket }) => {
     socket.emit("leaveRoom", tempLobbyCode, tempUser);
   };
   return (
-    <div className="h-full bg-wine-70 p-8 border-r-2 border-wine-20 w-[340px] flex flex-col justify-between">
+    <div className="h-full bg-wine-70 p-6 border-r-2 border-wine-20 w-[340px] flex flex-col justify-between">
       <div>
-        <h1 className="text-center text-[2.7rem] text-wine-5 font-Jomhuria tracking-wider">
+        <h1 className="text-center text-[2.7rem] text-wine-5 font-Bangers tracking-wider">
+          Lobby Name
+        </h1>
+        <h1 className="text-center text-[2.2rem] text-wine-5 font-Jomhuria tracking-wider">
           Lobby Members
         </h1>
         {
           //Show Lobby members here
           lobbyMembers.length > 0 && (
-            <div className="mt-8">
+            <div className="mt-5">
               {lobbyMembers.map((member, index) => (
                 <div
                   key={index}
@@ -41,7 +44,7 @@ const MembersList = ({ socket }) => {
                     <img
                       src={member?.avatar}
                       alt={`This is ${member?.username} avatar`}
-                      width={50}
+                      width={40}
                     />
                   </div>
                   <div>

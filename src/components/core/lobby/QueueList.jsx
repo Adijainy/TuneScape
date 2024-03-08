@@ -7,7 +7,7 @@ const QueueList = () => {
   return (
     <div
       id="scrollBar"
-      className="bg-[#411831] p-3 flex flex-col gap-1 rounded-xl w-[280px] h-4/5 border-[1px] border-wine-20 border-r-0 overflow-y-scroll"
+      className="bg-[#411831] p-3 flex flex-col gap-1 rounded-xl w-[280px] h-4/5 border-[1px] border-wine-20 overflow-y-scroll"
     >
       {lobbyQueue.map((song, indexSong) => {
         return (
