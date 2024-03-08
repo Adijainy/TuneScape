@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import songDummy from "../../../assets/songDummy.png";
 import Player from "./player/Player";
 import QueueList from "./QueueList";
+import { setIndex } from "../../../slices/lobbySlice";
 
 const Lobby = () => {
   const audio = useRef(null);
@@ -26,6 +27,10 @@ const Lobby = () => {
   const [isPlaying, setIsPlaying] = useState(true);
   const navigate = useNavigate();
 
+  //bulding the queue functionality
+  const { index } = useSelector((state) => state.lobby);
+  const { lobbyQueue } = useSelector((state) => state.lobby);
+
   useEffect(() => {
     socket.on("connect", () => {
       console.log(socket.id);
@@ -35,7 +40,7 @@ const Lobby = () => {
 
     socket.on("sendSong", (song) => {
       console.log("song recieved" + song);
-      setSongDetails(song);
+      //setSongDetails(song);
       handleUpdateLobby();
     });
 
@@ -57,6 +62,20 @@ const Lobby = () => {
     socket.on("userJoined", (data) => {
       console.log("User Joined : ", data);
       handleUpdateLobby();
+    });
+    //next song event
+    socket.on("nextSong", (index) => {
+      console.log("NEXT SONG", lobbyCode?.length);
+      if (lobbyQueue?.length > index + 1) {
+        dispatch(setIndex(index + 1));
+      }
+    });
+
+    //prev song event
+    socket.on("prevSong", (index) => {
+      if (index > 0) {
+        dispatch(setIndex(index - 1));
+      }
     });
 
     return () => {
@@ -119,6 +138,14 @@ const Lobby = () => {
     dispatch(getLobbyInfo(lobbyCode));
   }
 
+  function handleChangeSong() {
+    socket.emit("changeSong", lobbyCode, index);
+  }
+  function handlePrevSong() {
+    console.log("PREV SONG");
+    socket.emit("changeSongPrev", lobbyCode, index);
+  }
+
   return (
     <div className="w-full h-screen">
       <div className="flex flex-row justify-between w-full h-full">
@@ -133,21 +160,23 @@ const Lobby = () => {
               <div className="p-2 rounded-lg">
                 <img
                   src={
-                    songDetails?.songCover ? songDetails?.songCover : songDummy
+                    lobbyQueue[index]?.songCover
+                      ? lobbyQueue[index]?.songCover
+                      : songDummy
                   }
-                  alt={`This is song album for ${songDetails?.songName}`}
+                  alt={`This is song album for ${lobbyQueue[index]?.songName}`}
                   width={200}
                   className="object-cover rounded-lg"
                 />
               </div>
               <div className="">
                 <h1 className="text-3xl text-wine-5 text-center font-Bangers tracking-widest line-clamp-1">
-                  {songDetails?.songName
-                    ? songDetails?.songName
+                  {lobbyQueue[index]?.songName
+                    ? lobbyQueue[index]?.songName
                     : "Starting soon..."}
                 </h1>
                 <p className="text-lg text-wine-5 font-semibold text-center">
-                  {songDetails?.artist}
+                  {lobbyQueue[index]?.artist}
                 </p>
               </div>
             </div>
@@ -156,12 +185,24 @@ const Lobby = () => {
           <div className=" bg-wine-50 bg-opacity-80 backdrop-blur-sm p-4 rounded-lg w-full">
             <Player
               audio={audio}
-              song={songDetails}
+              song={lobbyQueue[index]}
               handlePausePlay={() => handleSongPlayPause()}
+              handleChangeSong={() => handleChangeSong()}
+              handlePrevSong={() => handlePrevSong()}
               isPlaying={isPlaying}
             />
 
-            <audio ref={audio} src={songDetails?.songUrl} autoPlay />
+            <audio
+              ref={audio}
+              src={lobbyQueue[index]?.songUrl}
+              autoPlay
+              onEnded={(e) => {
+                e.preventDefault();
+                if (user?.leader) {
+                  handleChangeSong();
+                }
+              }}
+            />
           </div>
         </div>
         {/* songList */}
