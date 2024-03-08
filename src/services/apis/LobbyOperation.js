@@ -146,3 +146,38 @@ export function getLobbyInfo(data) {
     }
   };
 }
+
+export async function getPublicLobby(){
+  
+    try {
+      const result = await apiConnector(
+        "GET",
+        lobbyEndpoints.GET_PUBLIC_LOBBIES,
+        null,
+        null,
+        null
+      );
+      
+      return result.data;
+    } catch (err) {
+      console.log(err);
+    }
+  
+}
+export function joinPublicLobby(data, navigate){
+  return async(dispatch)=>{
+    try{
+      console.log("JOIN PUBLIC LOBBY DATA : ", data);
+      const result = await apiConnector("POST", lobbyEndpoints.JOIN_LOBBY, data, null, null);
+      dispatch(setLobbyInfo(result.data.updateLobby));
+      localStorage.setItem("lobbyID", JSON.stringify(result.data.updateLobby._id));
+      localStorage.setItem("lobbyMembers", JSON.stringify(result.data.updateLobby.members));
+      localStorage.setItem("lobbyQueue", JSON.stringify(result.data.updateLobby.queue));
+      dispatch(setLobbyCode(result.data.updateLobby.code));
+      localStorage.setItem("lobbyCode", JSON.stringify(result.data.updateLobby.code));
+      navigate("/lobbyId/" + result.data.updateLobby.code);
+    }catch(err){
+      console.log(err);
+    }
+  }
+}

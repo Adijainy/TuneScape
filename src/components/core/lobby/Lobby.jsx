@@ -65,17 +65,15 @@ const Lobby = () => {
     });
     //next song event
     socket.on("nextSong", (index) => {
-      console.log("NEXT SONG", lobbyCode?.length);
-      if (lobbyQueue?.length > index + 1) {
-        dispatch(setIndex(index + 1));
-      }
+      console.log("NEXT SONG", lobbyQueue?.length);
+      dispatch(setIndex(index + 1));
+      
     });
 
     //prev song event
     socket.on("prevSong", (index) => {
-      if (index > 0) {
-        dispatch(setIndex(index - 1));
-      }
+      dispatch(setIndex(index - 1));
+      
     });
 
     return () => {
@@ -106,10 +104,11 @@ const Lobby = () => {
       songURI: songData.uri,
       lobbyCode: lobbyCode,
     };
+    console.log("Selected Song : ", song);
     const result = await getSongURL(song);
 
     socket.emit("playSong", result, lobbyCode);
-    console.log("Selected Song : ", result);
+    //console.log("Selected Song : ", result);
   };
 
   //handle song play and pause

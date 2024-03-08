@@ -18,7 +18,7 @@ const Player = ({
   handlePrevSong,
 }) => {
   const { user } = useSelector((state) => state.user);
-  const [volume, setVolume] = useState(0.5);
+  const [volume, setVolume] = useState(0.3);
   const [timeStamp, setTimeStamp] = useState(0);
   useEffect(() => {
     audio.current.ontimeupdate = () => {
@@ -33,7 +33,7 @@ const Player = ({
     <div className="flex flex-col gap-3">
       <div>
         <SeekBar
-          max={audio.current?.duration}
+          max={audio.current?.duration ? audio.current.duration : 0}
           min={0}
           disabled={true}
           value={timeStamp}
