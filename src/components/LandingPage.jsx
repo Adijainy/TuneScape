@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io";
 import { useRef } from "react";
 import { avatars } from "../assets/Avatar";
@@ -7,12 +7,14 @@ import { useForm } from "react-hook-form";
 import { createLobby, joinLobby } from "../services/apis/LobbyOperation";
 import { useDispatch } from "react-redux";
 import { setUser } from "../slices/userSlice";
+import { createUser } from "../services/apis/UserOperation";
 
 const LandingPage = () => {
   const nameRef = useRef();
   const navigate = useNavigate();
   const { register, handleSubmit, error } = useForm();
   const dispatch = useDispatch();
+  const [joinPublic, setJoinPublic] = useState(false);
 
   const handleScroll = (e, direction) => {
     e.preventDefault();
@@ -26,7 +28,12 @@ const LandingPage = () => {
 
   const handleFormSubmit = (data) => {
     data.avatar = active;
-    if (data.lobbyCode === "") {
+    if(joinPublic){
+      data.leader = false;
+      handlePublicJoin(data);
+      return navigate("/joinPublicLobby");
+    }
+    else if (data.lobbyCode === "") {
       //Create Lobby
       data.leader = true;
       dispatch(createLobby(data, navigate));
@@ -36,6 +43,11 @@ const LandingPage = () => {
       dispatch(joinLobby(data, navigate));
     }
   };
+
+  const handlePublicJoin = async(data) => {
+    const user = await createUser(data);
+    dispatch(setUser(user));
+  }
   return (
     <div className="relative mt-10 justify-center flex flex-col ">
       <h1 className="font-Bangers text-[6.5rem] text-wine-25 drop-shadow-[0.4rem_0rem_0.1px_#E4BCDE] tracking-wider text-center ">
@@ -91,7 +103,7 @@ const LandingPage = () => {
           {/* </Link> */}
           <p className="text-2xl my-1">OR</p>
           {/* <Link to="/joinPublicLobby"> */}
-          <button type="submit" className="btn-purple">
+          <button type="submit" className="btn-purple" onClick={()=>setJoinPublic(true)}>
             Check out Public Lobby!
           </button>
           {/* </Link> */}
