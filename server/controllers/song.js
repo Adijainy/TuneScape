@@ -23,7 +23,7 @@ exports.getSong = async (req, res) => {
     const lobby = await Lobby.findOne({ code: lobbyCode });
     const updateLobby = await Lobby.findByIdAndUpdate(
       lobby._id,
-      { $push: { queue: newSong._id } },
+      { $push: { queue: song._id } },
       { new: true }
     )
       .populate("queue")
@@ -41,7 +41,6 @@ exports.getSong = async (req, res) => {
 
 exports.addSong = async (req, res) => {
   try {
-    console.log("req.body", req.body);
     const {
       songName,
       artist,

@@ -23,11 +23,12 @@ export async function searchSongs(query) {
 export async function getSongURL(song) {
   try {
     //check if db has song url
+    console.log("GET SONG URL DATA: ", song);
     const dbCheckResult = await apiConnector(
-      "GET",
+      "PUT",
       `${lobbyEndpoints.GET_SONG}${song.songId}`,
+      song,
       null,
-      header,
       null
     );
     console.log("DB CHECK RESPONSE: ", dbCheckResult);

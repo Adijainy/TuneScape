@@ -31,7 +31,7 @@ router.delete("/lobby/leave/leader", leaveLobbyLeader);
 router.get("/lobby/public", getPublicLobbies);
 router.get("/lobby/members", getLobbyMembers);
 router.get("/lobby/get=:lobbyCode", getLobbyInfo);
-router.get("/song/get=:songId", getSong);
+router.put("/song/get=:songId", getSong);
 router.post("/song/add", addSong);
 router.put("/song/add/:lobbyCode&:songId", addSongInLobby);
 router.delete("/song/remove/:lobbyCode&:songId", removeFromQueue);
