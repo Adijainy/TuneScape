@@ -11,6 +11,7 @@ const MembersList = ({ socket }) => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const { lobbyCode } = useSelector((state) => state.user);
+  const { lobbyName } = useSelector((state) => state.lobby);
 
   const handleLeaveLobby = () => {
     const tempLobbyCode = lobbyCode;
@@ -23,7 +24,7 @@ const MembersList = ({ socket }) => {
     <div className="h-full bg-wine-70 p-6 border-r-2 border-wine-20 w-[340px] flex flex-col justify-between">
       <div>
         <h1 className="text-center text-[2.7rem] text-wine-5 font-Bangers tracking-wider">
-          Lobby Name
+          {lobbyName}
         </h1>
         <h1 className="text-center text-[2.2rem] text-wine-5 font-Jomhuria tracking-wider">
           Lobby Members
