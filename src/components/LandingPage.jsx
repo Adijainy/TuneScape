@@ -49,11 +49,11 @@ const LandingPage = () => {
     dispatch(setUser(user));
   }
   return (
-    <div className="relative mt-10 justify-center flex flex-col ">
-      <h1 className="font-Bangers text-[6.5rem] text-wine-25 drop-shadow-[0.4rem_0rem_0.1px_#E4BCDE] tracking-wider text-center ">
+    <div className="relative mt-24 md:mt-10 justify-center flex flex-col ">
+      <h1 className="font-Bangers text-7xl md:text-8xl lg:text-[6.5rem] text-wine-25 drop-shadow-[0.3rem_0rem_0.1px_#E4BCDE] lg:drop-shadow-[0.4rem_0rem_0.1px_#E4BCDE] tracking-wider text-center ">
         TuneScape
       </h1>
-      <div className="max-w-[60%] w-[75%] text-box">
+      <div className="max-w-[90%] md:max-w-[60%] w-[90%] sm:w-[60%] md:w-[75%] text-box mt-6 md:mt-0">
         <form onSubmit={handleSubmit(handleFormSubmit)}>
           <input
             {...register("username", { required: true })}
@@ -68,7 +68,7 @@ const LandingPage = () => {
             </button>
             <div
               ref={nameRef}
-              className="h-24 flex overflow-x-hidden gap-4 px-4 rounded-md"
+              className="h-16 md:h-24 flex overflow-x-hidden gap-4 px-4 rounded-md"
             >
               {avatars.map((avatar) => (
                 <img

@@ -15,19 +15,19 @@ const VolumeBar = ({
     <div className="flex gap-2 items-center">
       {value == 0 && (
         <ImVolumeMute2
-          className="text-wine-5 text-2xl cursor-pointer"
+          className="text-wine-5 text-4xl md:text-2xl cursor-pointer"
           onClick={() => setVolume(0.5)}
         />
       )}
       {value > 0 && value < 0.6 && (
         <ImVolumeLow
-          className="text-wine-5 text-2xl cursor-pointer"
+          className="text-wine-5 text-4xl md:text-2xl cursor-pointer"
           onClick={() => setVolume(0)}
         />
       )}
       {value >= 0.6 && (
         <ImVolumeMedium
-          className="text-wine-5 text-2xl cursor-pointer"
+          className="text-wine-5 text-4xl md:text-2xl cursor-pointer"
           onClick={() => setVolume(0)}
         />
       )}
