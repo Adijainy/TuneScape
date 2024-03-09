@@ -2,23 +2,28 @@ import { apiConnector } from "../apiConnector";
 import { lobbyEndpoints } from "../apis";
 import { createUser } from "./UserOperation";
 import { setLobbyCode, setUser } from "../../slices/userSlice";
-import { setLobbyInfo } from "../../slices/lobbySlice";
+import { setLobbyInfo,setIndex } from "../../slices/lobbySlice";
+import { toast } from "react-hot-toast";
 
 export function createLobby(data, navigate) {
   return async (dispatch) => {
     try {
+      const toastId = toast.loading("Creating Lobby...");
       const user = await createUser(data);
       dispatch(setUser(user));
       localStorage.setItem("user", JSON.stringify(user));
       navigate("/createLobby");
+      toast.dismiss(toastId);
     } catch (err) {
       console.log(err);
+      toast.error("Error Creating Lobby, ", err.message);
     }
   };
 }
 
 export function joinLobby(data, navigate) {
   return async (dispatch) => {
+    const toastId = toast.loading("Joining Lobby...");
     try {
       const user = await createUser(data);
       dispatch(setUser(user));
@@ -49,7 +54,10 @@ export function joinLobby(data, navigate) {
         "lobbyCode",
         JSON.stringify(result.data.updateLobby.code)
       );
+      dispatch(setIndex(0));
       navigate("/lobbyId/" + result.data.updateLobby.code);
+      toast.success("Lobby Joined!");
+      toast.dismiss(toastId);
     } catch (err) {
       console.log(err);
     }
@@ -58,6 +66,7 @@ export function joinLobby(data, navigate) {
 
 export function nowCreateLobby(data, navigate) {
   return async (dispatch) => {
+    const toastId = toast.loading("Creating Lobby...")
     try {
       const result = await apiConnector(
         "POST",
@@ -68,6 +77,7 @@ export function nowCreateLobby(data, navigate) {
       );
       console.log("CREATE LOBBY RESPONSE: ", result.data);
       dispatch(setLobbyInfo(result.data.updateLobby));
+      dispatch(setIndex(0));
       localStorage.setItem(
         "lobbyID",
         JSON.stringify(result.data.updateLobby._id)
@@ -82,8 +92,11 @@ export function nowCreateLobby(data, navigate) {
       );
       dispatch(setLobbyCode(result.data.updateLobby.code));
       navigate("/lobbyId/" + result.data.updateLobby.code);
+      toast.success("Lobby Created!");
+      toast.dismiss(toastId);
     } catch (err) {
       console.log(err);
+      toast.error("Error Creating Lobby, ", err.message);
     }
   };
 }
@@ -121,6 +134,9 @@ export function leaveLobby(data, navigate) {
       );
       dispatch(setUser({}));
       localStorage.clear();
+      if(!data.leader){
+        toast.success("Lobby Left!");
+      }
       dispatch(setLobbyInfo({}));
       navigate("/");
     } catch (err) {
@@ -148,7 +164,7 @@ export function getLobbyInfo(data) {
 }
 
 export async function getPublicLobby(){
-  
+    const toastId = toast.loading("Fetching Public Lobbies...");
     try {
       const result = await apiConnector(
         "GET",
@@ -157,16 +173,19 @@ export async function getPublicLobby(){
         null,
         null
       );
-      
+      toast.success("Public Lobbies Fetched!");
+      toast.dismiss(toastId);
       return result.data;
     } catch (err) {
       console.log(err);
+      toast.error("Error Fetching Public Lobbies, ", err.message);
     }
   
 }
 export function joinPublicLobby(data, navigate){
   return async(dispatch)=>{
     try{
+      const toastId = toast.loading("Joining Lobby...");
       console.log("JOIN PUBLIC LOBBY DATA : ", data);
       const result = await apiConnector("POST", lobbyEndpoints.JOIN_LOBBY, data, null, null);
       dispatch(setLobbyInfo(result.data.updateLobby));
@@ -176,8 +195,11 @@ export function joinPublicLobby(data, navigate){
       dispatch(setLobbyCode(result.data.updateLobby.code));
       localStorage.setItem("lobbyCode", JSON.stringify(result.data.updateLobby.code));
       navigate("/lobbyId/" + result.data.updateLobby.code);
+      toast.success("Lobby Joined!");
+      toast.dismiss(toastId);
     }catch(err){
       console.log(err);
+      toast.error("Error Joining Lobby, ", err.message);
     }
   }
 }

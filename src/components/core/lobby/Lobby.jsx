@@ -14,6 +14,7 @@ import Player from "./player/Player";
 import QueueList from "./QueueList";
 import { setIndex } from "../../../slices/lobbySlice";
 import { RiMenuUnfoldLine } from "react-icons/ri";
+import {toast} from "react-hot-toast";
 
 const Lobby = () => {
   const audio = useRef(null);
@@ -128,8 +129,11 @@ const Lobby = () => {
 
   async function handleLeaveLobby(data) {
     if (!data.leader) {
+      dispatch(setIndex(0));
       handleUpdateLobby();
     } else {
+      dispatch(setIndex(0));
+      toast.error("Lobby Disbanded!");
       navigate("/");
     }
   }
