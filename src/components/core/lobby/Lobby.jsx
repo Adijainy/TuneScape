@@ -13,6 +13,7 @@ import songDummy from "../../../assets/songDummy.png";
 import Player from "./player/Player";
 import QueueList from "./QueueList";
 import { setIndex } from "../../../slices/lobbySlice";
+import { RiMenuUnfoldLine } from "react-icons/ri";
 
 const Lobby = () => {
   const audio = useRef(null);
@@ -26,6 +27,7 @@ const Lobby = () => {
   const [isMuted, setIsMuted] = useState(false);
   const [isPlaying, setIsPlaying] = useState(true);
   const navigate = useNavigate();
+  const [isMemberSlideOpen, setIsMemberSlideOpen] = useState(false);
 
   //bulding the queue functionality
   const { index } = useSelector((state) => state.lobby);
@@ -79,7 +81,7 @@ const Lobby = () => {
     return () => {
       console.log(socket);
       socket.disconnect();
-      handleLeaveLobby(user._id);
+      //handleLeaveLobby(user._id);
     };
   }, []);
   // useEffect(() => {
@@ -146,15 +148,23 @@ const Lobby = () => {
   }
 
   return (
-    <div className="w-full h-screen">
-      <div className="flex flex-row justify-between w-full h-full">
+    <div className={`w-full h-screen md:h-screen ${isMemberSlideOpen? "overflow-hidden": "overflow-x-scroll"} md:overflow-hidden`}>
+      <div className="flex flex-col md:flex-row justify-center md:justify-between w-full h-fit md:h-full relative">
         {/* Show members */}
-        <div>
-          <MembersList socket={socket} />
+        <div className={`block h-screen w-full md:w-[20rem] md:h-full absolute top-0 left-0 ${isMemberSlideOpen? "translate-x-0" : "-translate-x-[600px] md:translate-x-0"} z-50 md:static md:block transition-all duration-300 ease-in`}>
+          <MembersList socket={socket} handleCloseSlide={()=>setIsMemberSlideOpen(false)}/>
+        </div>
+        <div className="block md:hidden text-wine-5 absolute top-4 left-4 text-4xl">
+          <button onClick={()=>setIsMemberSlideOpen(true)}><RiMenuUnfoldLine /></button>
         </div>
         {/* songDetails */}
-        <div className="h-full my-auto rounded-3xl flex flex-col items-center justify-evenly min-w-[600px]">
-          <div className="bg-wine-70 bg-opacity-60 backdrop-blur-sm rounded-lg p-2 pb-3 w-fit max-w-64">
+        <div className="mx-auto h-full min-h-screen my-auto rounded-3xl flex flex-col items-center justify-evenly max-w-[90%] md:min-w-[37rem]">
+
+        <h1 className="block md:hidden font-Bangers text-7xl md:text-8xl lg:text-[6.5rem] text-wine-25 drop-shadow-[0.3rem_0rem_0.1px_#E4BCDE] lg:drop-shadow-[0.4rem_0rem_0.1px_#E4BCDE] tracking-wider text-center ">
+        TuneScape
+      </h1>
+          {/* Song Card  */}
+          <div className=" bg-wine-70 bg-opacity-60 backdrop-blur-sm rounded-lg p-2 pb-3 w-fit max-w-64">
             <div className="flex flex-col justify-center gap-0 items-center">
               <div className="p-2 rounded-lg">
                 <img
@@ -181,7 +191,7 @@ const Lobby = () => {
             </div>
           </div>
           {/* Player  */}
-          <div className=" bg-wine-50 bg-opacity-80 backdrop-blur-sm p-4 rounded-lg w-full">
+          <div className=" mb-0 bg-wine-50 bg-opacity-80 backdrop-blur-sm p-4 rounded-lg w-full">
             <Player
               audio={audio}
               song={lobbyQueue[index]}
@@ -206,18 +216,18 @@ const Lobby = () => {
         </div>
         {/* songList */}
         <div
-          className={`h-full w-[337px] bg-wine-70 p-6 border-l-2 border-wine-20 grid grid-cols-1 ${
+          className={`h-screen max-h-[100vh] w-full md:max-w-[20rem] bg-wine-70 p-6 md:border-l-2 border-wine-20 grid grid-cols-1 ${
             user?.leader ? " grid-rows-2" : "grid-rows-1"
           }`}
         >
           {/* Search Song Here  */}
           {user?.leader && (
-            <div className="flex flex-col">
+            <div className="flex flex-col items-center">
               <h1 className="text-center text-[2.6rem] text-wine-5 font-Jomhuria tracking-wider">
                 Search Song Here
               </h1>
               {/* Search Container  */}
-              <div className="flex flex-row justify-center items-center mb-3">
+              <div className="flex flex-row justify-center items-center mb-3 w-full">
                 <input
                   type="text"
                   placeholder="Search Song Here"
@@ -229,11 +239,11 @@ const Lobby = () => {
                       handleSearchSong();
                     }
                   }}
-                  className="border-2 border-wine-30 bg-wine-70 text-wine-5 px-5 py-3 rounded-l-full placeholder:text-wine-20"
+                  className="border-2 border-wine-30 bg-wine-70 text-wine-5  py-2 px-5 md:py-3 w-full rounded-l-full placeholder:text-wine-20"
                 />
                 <button
                   onClick={() => handleSearchSong()}
-                  className="rounded-r-full border-2 border-wine-30 bg-wine-70 text-wine-20 px-5 py-3 text-2xl transition-all duration-150 hover:bg-wine-30 hover:text-wine-5"
+                  className="rounded-r-full border-2 border-wine-30 bg-wine-70 text-wine-20 py-2 px-5 md:py-3 text-2xl transition-all duration-150 hover:bg-wine-30 hover:text-wine-5"
                 >
                   <IoSearch />
                 </button>
@@ -243,7 +253,7 @@ const Lobby = () => {
               {songList?.length > 0 && (
                 <div
                   id="scrollBar"
-                  className="bg-[#411831] p-3 flex flex-col gap-1 rounded-xl w-[280px] h-4/5 border-[1px] border-wine-20 overflow-y-scroll"
+                  className="bg-[#411831] p-3 flex flex-col gap-1 rounded-xl w-full  h-4/5 border-[1px] border-wine-20 overflow-y-scroll"
                 >
                   {songList.map((song) => (
                     <div
@@ -255,14 +265,14 @@ const Lobby = () => {
                         <img
                           src={song.data.albumOfTrack.coverArt.sources[0].url}
                           alt={`cover at of ${song.data.name}`}
-                          className="w-[30px] h-[30px] rounded"
+                          className="w-[35px] md:w-[30px] md:h-[30px] rounded"
                         />
                       </div>
                       <div className="w-4/5">
-                        <h1 className="text-white text-xs line-clamp-1">
+                        <h1 className="text-white text-sm md:text-xs line-clamp-1">
                           {song.data.name}
                         </h1>
-                        <p className="text-gray-400 text-[10px]">
+                        <p className="text-gray-400 text-[12px] md:text-[10px]">
                           {song.data.artists.items[0].profile.name}
                         </p>
                       </div>
@@ -274,7 +284,7 @@ const Lobby = () => {
           )}
 
           {/* Queue */}
-          <div>
+          <div className=" h-full">
             <h1 className="text-center text-[2.7rem] text-wine-5 font-Jomhuria tracking-wider">
               Song Queue
             </h1>

@@ -44,12 +44,12 @@ const CreateLobby = () => {
 
   return (
     <>
-      <div className="relative h-screen w-2/6 flex items-center justify-center">
+      <div className="relative h-screen w-4/5 md:w-2/6 flex items-center justify-center">
         <form
           className="text-box relative"
           onSubmit={handleSubmit(handleFormSubmit)}
         >
-          <h1 className="text-4xl">Create New Lobby</h1>
+          <h1 className="text-3xl md:text-4xl">Create New Lobby</h1>
           <div className="absolute top-5 right-6">
             <SwitchButton setValue={setValue} />
           </div>

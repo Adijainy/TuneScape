@@ -4,8 +4,9 @@ import { FaCrown } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { leaveLobby } from "../../../services/apis/LobbyOperation";
 import { useDispatch } from "react-redux";
+import { MdOutlineClose } from "react-icons/md";
 
-const MembersList = ({ socket }) => {
+const MembersList = ({ socket, handleCloseSlide }) => {
   const { lobbyMembers } = useSelector((state) => state.lobby);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -21,8 +22,11 @@ const MembersList = ({ socket }) => {
     socket.emit("leaveRoom", tempLobbyCode, tempUser);
   };
   return (
-    <div className="h-full bg-wine-70 p-6 border-r-2 border-wine-20 w-[340px] flex flex-col justify-between">
+    <div className="h-full bg-wine-70 p-6 border-r-2 border-wine-20 max-w-[20rem] flex flex-col justify-between">
       <div>
+        <div className="block md:hidden text-4xl text-wine-5">
+          <button onClick={handleCloseSlide}><MdOutlineClose /></button>
+        </div>
         <h1 className="text-center text-[2.7rem] text-wine-5 font-Bangers tracking-wider">
           {lobbyName}
         </h1>
