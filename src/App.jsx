@@ -24,7 +24,15 @@ function App() {
         />
         <RouterProvider router={appRouter} />
       </div>
-      <Toaster />
+      <Toaster toastOptions={{style: {
+                  backgroundColor: "#411831",
+                  color: " #E4BCDE",
+                  fontWeight: "bold",
+                },
+                iconTheme: {
+                  primary: "#E4BCDE",
+                  secondary: "#411831",
+                },}}/>
     </Provider>
   );
 }
