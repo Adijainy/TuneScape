@@ -2,7 +2,7 @@ import { apiConnector } from "../apiConnector";
 import { lobbyEndpoints } from "../apis";
 import { createUser } from "./UserOperation";
 import { setLobbyCode, setUser } from "../../slices/userSlice";
-import { setLobbyInfo,setIndex } from "../../slices/lobbySlice";
+import { setLobbyInfo, setIndex } from "../../slices/lobbySlice";
 import { toast } from "react-hot-toast";
 
 export function createLobby(data, navigate) {
@@ -66,7 +66,7 @@ export function joinLobby(data, navigate) {
 
 export function nowCreateLobby(data, navigate) {
   return async (dispatch) => {
-    const toastId = toast.loading("Creating Lobby...")
+    const toastId = toast.loading("Creating Lobby...");
     try {
       const result = await apiConnector(
         "POST",
@@ -134,7 +134,7 @@ export function leaveLobby(data, navigate) {
       );
       dispatch(setUser({}));
       localStorage.clear();
-      if(!data.leader){
+      if (!data.leader) {
         toast.success("Lobby Left!");
       }
       dispatch(setLobbyInfo({}));
@@ -163,43 +163,61 @@ export function getLobbyInfo(data) {
   };
 }
 
-export async function getPublicLobby(){
-    const toastId = toast.loading("Fetching Public Lobbies...");
+export async function getPublicLobby() {
+  const toastId = toast.loading("Fetching Public Lobbies...");
+  try {
+    const result = await apiConnector(
+      "GET",
+      lobbyEndpoints.GET_PUBLIC_LOBBIES,
+      null,
+      null,
+      null
+    );
+    toast.success("Public Lobbies Fetched!");
+    toast.dismiss(toastId);
+    return result.data;
+  } catch (err) {
+    console.log(err);
+    toast.error("Error Fetching Public Lobbies, ", err.message);
+  }
+}
+export function joinPublicLobby(data, navigate) {
+  return async (dispatch) => {
     try {
+      const toastId = toast.loading("Joining Lobby...");
+      console.log("JOIN PUBLIC LOBBY DATA : ", data);
       const result = await apiConnector(
-        "GET",
-        lobbyEndpoints.GET_PUBLIC_LOBBIES,
-        null,
+        "POST",
+        lobbyEndpoints.JOIN_LOBBY,
+        data,
         null,
         null
       );
-      toast.success("Public Lobbies Fetched!");
-      toast.dismiss(toastId);
-      return result.data;
-    } catch (err) {
-      console.log(err);
-      toast.error("Error Fetching Public Lobbies, ", err.message);
-    }
-  
-}
-export function joinPublicLobby(data, navigate){
-  return async(dispatch)=>{
-    try{
-      const toastId = toast.loading("Joining Lobby...");
-      console.log("JOIN PUBLIC LOBBY DATA : ", data);
-      const result = await apiConnector("POST", lobbyEndpoints.JOIN_LOBBY, data, null, null);
       dispatch(setLobbyInfo(result.data.updateLobby));
-      localStorage.setItem("lobbyID", JSON.stringify(result.data.updateLobby._id));
-      localStorage.setItem("lobbyMembers", JSON.stringify(result.data.updateLobby.members));
-      localStorage.setItem("lobbyQueue", JSON.stringify(result.data.updateLobby.queue));
+      localStorage.setItem(
+        "lobbyID",
+        JSON.stringify(result.data.updateLobby._id)
+      );
+      localStorage.setItem(
+        "lobbyMembers",
+        JSON.stringify(result.data.updateLobby.members)
+      );
+      localStorage.setItem(
+        "lobbyQueue",
+        JSON.stringify(result.data.updateLobby.queue)
+      );
       dispatch(setLobbyCode(result.data.updateLobby.code));
-      localStorage.setItem("lobbyCode", JSON.stringify(result.data.updateLobby.code));
+      localStorage.setItem(
+        "lobbyCode",
+        JSON.stringify(result.data.updateLobby.code)
+      );
+      dispatch(setIndex(0));
       navigate("/lobbyId/" + result.data.updateLobby.code);
       toast.success("Lobby Joined!");
       toast.dismiss(toastId);
-    }catch(err){
+    } catch (err) {
       console.log(err);
       toast.error("Error Joining Lobby, ", err.message);
     }
-  }
+  };
 }

@@ -14,7 +14,7 @@ import Player from "./player/Player";
 import QueueList from "./QueueList";
 import { setIndex } from "../../../slices/lobbySlice";
 import { RiMenuUnfoldLine } from "react-icons/ri";
-import {toast} from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
 const Lobby = () => {
   const audio = useRef(null);
@@ -70,13 +70,11 @@ const Lobby = () => {
     socket.on("nextSong", (index) => {
       console.log("NEXT SONG", lobbyQueue?.length);
       dispatch(setIndex(index + 1));
-      
     });
 
     //prev song event
     socket.on("prevSong", (index) => {
       dispatch(setIndex(index - 1));
-      
     });
 
     return () => {
@@ -107,6 +105,11 @@ const Lobby = () => {
       songURI: songData.uri,
       lobbyCode: lobbyCode,
     };
+    //check to see if the song is already in the queue
+    if (lobbyQueue.find((item) => item.songId === song.songId)) {
+      toast.error("Song already in queue");
+      return;
+    }
     console.log("Selected Song : ", song);
     const result = await getSongURL(song);
 
@@ -152,21 +155,35 @@ const Lobby = () => {
   }
 
   return (
-    <div className={`w-full h-screen md:h-screen ${isMemberSlideOpen? "overflow-hidden": "overflow-x-scroll"} md:overflow-hidden`}>
+    <div
+      className={`w-full h-screen md:h-screen ${
+        isMemberSlideOpen ? "overflow-hidden" : "overflow-x-scroll"
+      } md:overflow-hidden`}
+    >
       <div className="flex flex-col md:flex-row justify-center md:justify-between w-full h-fit md:h-full relative">
         {/* Show members */}
-        <div className={`block h-screen w-full md:w-[20rem] md:h-full absolute top-0 left-0 ${isMemberSlideOpen? "translate-x-0" : "-translate-x-[600px] md:translate-x-0"} z-50 md:static md:block transition-all duration-300 ease-in`}>
-          <MembersList socket={socket} handleCloseSlide={()=>setIsMemberSlideOpen(false)}/>
+        <div
+          className={`block h-screen w-full md:w-[20rem] md:h-full absolute top-0 left-0 ${
+            isMemberSlideOpen
+              ? "translate-x-0"
+              : "-translate-x-[600px] md:translate-x-0"
+          } z-50 md:static md:block transition-all duration-300 ease-in`}
+        >
+          <MembersList
+            socket={socket}
+            handleCloseSlide={() => setIsMemberSlideOpen(false)}
+          />
         </div>
         <div className="block md:hidden text-wine-5 absolute top-4 left-4 text-4xl">
-          <button onClick={()=>setIsMemberSlideOpen(true)}><RiMenuUnfoldLine /></button>
+          <button onClick={() => setIsMemberSlideOpen(true)}>
+            <RiMenuUnfoldLine />
+          </button>
         </div>
         {/* songDetails */}
         <div className="mx-auto h-full min-h-screen my-auto rounded-3xl flex flex-col items-center justify-evenly max-w-[90%] md:min-w-[37rem]">
-
-        <h1 className="block md:hidden font-Bangers text-7xl md:text-8xl lg:text-[6.5rem] text-wine-25 drop-shadow-[0.3rem_0rem_0.1px_#E4BCDE] lg:drop-shadow-[0.4rem_0rem_0.1px_#E4BCDE] tracking-wider text-center ">
-        TuneScape
-      </h1>
+          <h1 className="block md:hidden font-Bangers text-7xl md:text-8xl lg:text-[6.5rem] text-wine-25 drop-shadow-[0.3rem_0rem_0.1px_#E4BCDE] lg:drop-shadow-[0.4rem_0rem_0.1px_#E4BCDE] tracking-wider text-center ">
+            TuneScape
+          </h1>
           {/* Song Card  */}
           <div className=" bg-wine-70 bg-opacity-60 backdrop-blur-sm rounded-lg p-2 pb-3 w-fit max-w-64">
             <div className="flex flex-col justify-center gap-0 items-center">
