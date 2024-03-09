@@ -69,7 +69,10 @@ exports.joinLobby = async (req, res) => {
 
 exports.getPublicLobbies = async (req, res) => {
   try {
-    const lobbies = await Lobby.find({ isPrivate: false }).populate("members");
+    const lobbies = await Lobby.find({ isPrivate: false })
+      .populate("members")
+      .populate("leader")
+      .exec();
     res.status(200).json(lobbies);
   } catch (error) {
     res.status(500).json({ message: error.message });
