@@ -8,7 +8,7 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: "*",
+    origin: "https://tunescape.netlify.app",
   })
 );
 
@@ -19,7 +19,7 @@ server.listen(PORT, () => {
 
 const io = require("socket.io")(server, {
   cors: {
-    origin: "*",
+    origin: "https://tunescape.netlify.app",
   },
 });
 
