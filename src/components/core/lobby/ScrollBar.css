@@ -10,3 +10,9 @@
   border-radius: 12px;
   background-color: #af408c;
 }
+
+@media screen and (max-width: 768px) {
+  #scrollBar::-webkit-scrollbar {
+    width: 4px;
+  }
+}

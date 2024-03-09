@@ -28,12 +28,11 @@ const LandingPage = () => {
 
   const handleFormSubmit = (data) => {
     data.avatar = active;
-    if(joinPublic){
+    if (joinPublic) {
       data.leader = false;
       handlePublicJoin(data);
       return navigate("/joinPublicLobby");
-    }
-    else if (data.lobbyCode === "") {
+    } else if (data.lobbyCode === "") {
       //Create Lobby
       data.leader = true;
       dispatch(createLobby(data, navigate));
@@ -44,12 +43,12 @@ const LandingPage = () => {
     }
   };
 
-  const handlePublicJoin = async(data) => {
+  const handlePublicJoin = async (data) => {
     const user = await createUser(data);
     dispatch(setUser(user));
-  }
+  };
   return (
-    <div className="relative mt-24 md:mt-10 justify-center flex flex-col ">
+    <div className="relative mt-24 md:mt-16 justify-center flex flex-col ">
       <h1 className="font-Bangers text-7xl md:text-8xl lg:text-[6.5rem] text-wine-25 drop-shadow-[0.3rem_0rem_0.1px_#E4BCDE] lg:drop-shadow-[0.4rem_0rem_0.1px_#E4BCDE] tracking-wider text-center ">
         TuneScape
       </h1>
@@ -103,7 +102,11 @@ const LandingPage = () => {
           {/* </Link> */}
           <p className="text-2xl my-1">OR</p>
           {/* <Link to="/joinPublicLobby"> */}
-          <button type="submit" className="btn-purple" onClick={()=>setJoinPublic(true)}>
+          <button
+            type="submit"
+            className="btn-purple"
+            onClick={() => setJoinPublic(true)}
+          >
             Check out Public Lobby!
           </button>
           {/* </Link> */}
