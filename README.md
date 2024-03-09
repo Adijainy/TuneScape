@@ -66,7 +66,7 @@ Before installing the application, ensure you have the following tools installed
    npm install
    ```
 
-4. **Main Folder Environment Setup**
+4. **Main Folder Environment Setup:**
    In the main folder, create a .env file and add the following variables:
 
    ```plaintext
@@ -75,7 +75,7 @@ Before installing the application, ensure you have the following tools installed
    VITE_BASE_URL={backend_url}
    ```
 
-5. **Server Folder Environment Setup**
+5. **Server Folder Environment Setup:**
    In the server folder, create a .env file and add the following variables:
 
    ```plaintext
@@ -110,7 +110,7 @@ Before installing the application, ensure you have the following tools installed
 - For production deployment, additional configuration steps might be necessary depending on your chosen hosting environment.
 - Ensure you replace `<your-username>` in the clone command with your actual GitHub username.
 
-Following these steps should successfully set up your local development environment for the EcoQuest application.
+Following these steps should successfully set up your local development environment for the TuneScape application.
 
 ## Additional Dependencies or Libraries Used
 
