@@ -19,6 +19,7 @@ const lobbySlice = createSlice({
     lobbyName: localStorage.getItem("lobbyName")
       ? JSON.parse(localStorage.getItem("lobbyName"))
       : null,
+      queueSize: 0,
   },
   reducers: {
     setLobbyInfo: (state, action) => {
@@ -27,6 +28,7 @@ const lobbySlice = createSlice({
       state.lobbyMembers = action.payload.members;
       state.lobbyQueue = action.payload.queue;
       state.lobbyName = action.payload.name;
+      state.queueSize = action.payload.queue.length;
     },
     updateLobbyQueue: (state, action) => {
       state.lobbyQueue = action.payload;

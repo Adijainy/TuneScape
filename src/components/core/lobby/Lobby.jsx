@@ -33,6 +33,7 @@ const Lobby = () => {
   //bulding the queue functionality
   const { index } = useSelector((state) => state.lobby);
   const { lobbyQueue } = useSelector((state) => state.lobby);
+  const {queueSize} = useSelector((state)=>state.lobby);
 
   useEffect(() => {
     socket.on("connect", () => {
@@ -68,7 +69,6 @@ const Lobby = () => {
     });
     //next song event
     socket.on("nextSong", (index) => {
-      console.log("NEXT SONG", lobbyQueue?.length);
       dispatch(setIndex(index + 1));
     });
 
@@ -132,10 +132,10 @@ const Lobby = () => {
 
   async function handleLeaveLobby(data) {
     if (!data.leader) {
-      dispatch(setIndex(0));
+      
       handleUpdateLobby();
     } else {
-      dispatch(setIndex(0));
+      
       toast.error("Lobby Disbanded!");
       navigate("/");
     }
@@ -147,10 +147,12 @@ const Lobby = () => {
   }
 
   function handleChangeSong() {
+    if(index < queueSize - 1)
     socket.emit("changeSong", lobbyCode, index);
   }
   function handlePrevSong() {
     console.log("PREV SONG");
+    if(index > 0)
     socket.emit("changeSongPrev", lobbyCode, index);
   }
 
