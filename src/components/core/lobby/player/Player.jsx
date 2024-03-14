@@ -40,11 +40,11 @@ const Player = ({
           value={timeStamp}
         />
       </div>
-      <div className="grid grid-cols-3 justify-center items-center">
+      <div className="grid grid-cols-4 md:grid-cols-3 justify-center items-center">
         <div className="text-wine-5 text-2xl">
           <MdOutlineQueueMusic />
         </div>
-        <div>
+        <div className="col-span-2 md:col-span-1">
           {user?.leader && (
             <div className="w-full flex flex-row gap-4 justify-center items-center">
               <button
@@ -77,8 +77,8 @@ const Player = ({
             </div>
           )}
         </div>
-        <div className="flex justify-end">
-          <div className="w-3/5">
+        <div className="w-fit flex justify-end">
+          <div className="w-fit md:w-3/5">
             <VolumeBar
               value={volume}
               min={0}

@@ -14,18 +14,20 @@ const MembersList = ({ socket, handleCloseSlide }) => {
   const { lobbyCode } = useSelector((state) => state.user);
   const { lobbyName } = useSelector((state) => state.lobby);
 
-  const handleLeaveLobby = () => {
+  const handleLeaveLobby = async () => {
     const tempLobbyCode = lobbyCode;
     const tempUser = user;
     console.log("Leaving lobby");
-    dispatch(leaveLobby(user, navigate));
+    await dispatch(leaveLobby(user, navigate));
     socket.emit("leaveRoom", tempLobbyCode, tempUser);
   };
   return (
     <div className="h-full bg-wine-70 p-6 border-r-2 border-wine-20 max-w-[20rem] flex flex-col justify-between">
       <div>
         <div className="block md:hidden text-4xl text-wine-5">
-          <button onClick={handleCloseSlide}><MdOutlineClose /></button>
+          <button onClick={handleCloseSlide}>
+            <MdOutlineClose />
+          </button>
         </div>
         <h1 className="text-center text-[2.7rem] text-wine-5 font-Bangers tracking-wider">
           {lobbyName}

@@ -12,10 +12,15 @@ import { createUser } from "../services/apis/UserOperation";
 const LandingPage = () => {
   const nameRef = useRef();
   const navigate = useNavigate();
-  const { register, handleSubmit, error } = useForm();
+  const {
+    register,
+    handleSubmit,
+    error,
+    formState: { errors },
+  } = useForm();
   const dispatch = useDispatch();
   const [joinPublic, setJoinPublic] = useState(false);
-
+  const [avatarSelected, setAvatarSelected] = useState(false);
   const handleScroll = (e, direction) => {
     e.preventDefault();
     if (direction === "left") {
@@ -27,6 +32,7 @@ const LandingPage = () => {
   const [active, setActive] = useState("");
 
   const handleFormSubmit = (data) => {
+    if (avatarSelected === false) return;
     data.avatar = active;
     if (joinPublic) {
       data.leader = false;
@@ -61,6 +67,9 @@ const LandingPage = () => {
             className="text-field"
             placeholder="Enter your name"
           />
+          {errors.username && (
+            <p className="text-red-500">This field is required</p>
+          )}
           <div className="flex flex-row justify-center items-center bg-wine-50 my-5 py-1">
             <button onClick={(e) => handleScroll(e, "left")}>
               <IoMdArrowDropleft />
@@ -77,7 +86,10 @@ const LandingPage = () => {
                   className={`avatar-style ${
                     active === avatar.src ? "bg-wine-70" : ""
                   }`}
-                  onClick={() => setActive(avatar.src)}
+                  onClick={() => {
+                    setActive(avatar.src);
+                    setAvatarSelected(true);
+                  }}
                 />
               ))}
             </div>
@@ -85,12 +97,18 @@ const LandingPage = () => {
               <IoMdArrowDropright />
             </button>
           </div>
+          {!avatarSelected && (
+            <p className="text-red-500">Please select an avatar</p>
+          )}
           <input
             {...register("lobbyCode")}
             type="text"
             className="text-field mb-4"
             placeholder="Enter lobby code"
           />
+          {errors.lobbyCode && (
+            <p className="text-red-500">This field is required</p>
+          )}
           <button type="submit" className="btn-purple">
             Join Lobby!
           </button>

@@ -45,7 +45,7 @@ exports.joinLobby = async (req, res) => {
     const Member = await User.findById(userId);
     const lobby = await Lobby.findOne({ code: lobbyCode });
     if (!lobby) {
-      res.status(404).json({ message: "Lobby not found" });
+      return res.status(404).json({ message: "Lobby not found" });
     }
     const updateLobby = await Lobby.findByIdAndUpdate(
       lobby._id,
