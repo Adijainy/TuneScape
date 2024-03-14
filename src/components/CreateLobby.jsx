@@ -59,7 +59,7 @@ const CreateLobby = () => {
             placeholder="Enter lobby name"
             {...register("name", { required: true })}
           />
-          {errors.lobbyName && (
+          {errors.name && (
             <p className="text-red-500 text-base">This field is required</p>
           )}
           <h2 className="my-2">Lobby Code</h2>

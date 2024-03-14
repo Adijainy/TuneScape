@@ -15,6 +15,7 @@ import QueueList from "./QueueList";
 import { setIndex } from "../../../slices/lobbySlice";
 import { RiMenuUnfoldLine } from "react-icons/ri";
 import { toast } from "react-hot-toast";
+import { leaveLobby } from "../../../services/apis/LobbyOperation";
 
 const Lobby = () => {
   const audio = useRef(null);
@@ -33,7 +34,7 @@ const Lobby = () => {
   //bulding the queue functionality
   const { index } = useSelector((state) => state.lobby);
   const { lobbyQueue } = useSelector((state) => state.lobby);
-  const {queueSize} = useSelector((state)=>state.lobby);
+  const { queueSize } = useSelector((state) => state.lobby);
 
   useEffect(() => {
     socket.on("connect", () => {
@@ -59,6 +60,7 @@ const Lobby = () => {
     });
 
     socket.on("userLeft", (data) => {
+      console.log("USER LEFT :", data);
       handleLeaveLobby(data);
     });
 
@@ -81,6 +83,7 @@ const Lobby = () => {
       console.log(socket);
       socket.disconnect();
       //handleLeaveLobby(user._id);
+      handleUserLeft();
     };
   }, []);
   // useEffect(() => {
@@ -132,10 +135,8 @@ const Lobby = () => {
 
   async function handleLeaveLobby(data) {
     if (!data.leader) {
-      
       handleUpdateLobby();
     } else {
-      
       toast.error("Lobby Disbanded!");
       navigate("/");
     }
@@ -147,13 +148,19 @@ const Lobby = () => {
   }
 
   function handleChangeSong() {
-    if(index < queueSize - 1)
-    socket.emit("changeSong", lobbyCode, index);
+    if (index < queueSize - 1) socket.emit("changeSong", lobbyCode, index);
   }
   function handlePrevSong() {
     console.log("PREV SONG");
-    if(index > 0)
-    socket.emit("changeSongPrev", lobbyCode, index);
+    if (index > 0) socket.emit("changeSongPrev", lobbyCode, index);
+  }
+
+  async function handleUserLeft() {
+    const tempLobbyCode = lobbyCode;
+    const tempUser = user;
+    console.log("Leaving lobby");
+    await dispatch(leaveLobby(user, navigate));
+    socket.emit("leaveRoom", tempLobbyCode, tempUser);
   }
 
   return (
@@ -181,6 +188,16 @@ const Lobby = () => {
             <RiMenuUnfoldLine />
           </button>
         </div>
+
+        <button
+          className="visible md:invisible btn-purple w-fit absolute top-4 right-4 text-wine-5 py-1 px-4 rounded-lg"
+          onClick={() => handleUserLeft()}
+        >
+          <span className="text-3xl tracking-wider font-Jomhuria ">
+            Leave Lobby
+          </span>
+        </button>
+
         {/* songDetails */}
         <div className="mx-auto h-full min-h-screen my-auto rounded-3xl flex flex-col items-center justify-evenly max-w-[90%] md:min-w-[37rem]">
           <h1 className="block md:hidden font-Bangers text-7xl md:text-8xl lg:text-[6.5rem] text-wine-25 drop-shadow-[0.3rem_0rem_0.1px_#E4BCDE] lg:drop-shadow-[0.4rem_0rem_0.1px_#E4BCDE] tracking-wider text-center ">

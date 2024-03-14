@@ -12,7 +12,7 @@ const VolumeBar = ({
   setVolume,
 }) => {
   return (
-    <div className="flex gap-2 items-center">
+    <div className="flex gap-1 md:gap-2 items-center">
       {value == 0 && (
         <ImVolumeMute2
           className="text-wine-5 text-4xl md:text-2xl cursor-pointer"

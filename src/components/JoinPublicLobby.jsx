@@ -14,6 +14,7 @@ const JoinPublicLobby = () => {
     const result = await getPublicLobby();
     setLobbies(result);
   }
+  
   return (
     <div className="relative h-screen w-4/5 md:w-2/3  flex flex-col items-center justify-center">
       <div className="text-box h-4/5 md:h-fit bg-opacity-75 backdrop-blur-sm my-8 md:my-0">
@@ -25,6 +26,14 @@ const JoinPublicLobby = () => {
           {lobbies.map((lobby) => (
             <LobbyCard key={lobby._id} lobby={lobby} onCli />
           ))}
+
+          {
+            lobbies.length == 0 && (
+              <div>
+                <p className="font-Jomhuria text-4xl text-wine-5">So silent here...</p>
+              </div>
+            )
+          }
         </div>
       </div>
     </div>

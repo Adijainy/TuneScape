@@ -35,7 +35,15 @@ export function joinLobby(data, navigate) {
         data,
         null,
         null
-      );
+      ).catch((err) => {
+        console.log("ERROR JOINING LOBBY : ", err.response.data.message);
+        toast.error(err.response.data.message);
+        toast.dismiss(toastId);
+      });
+      if (result.status !== 201) {
+        toast.error("Error Joining Lobby, ", result.data.message);
+        return;
+      }
       dispatch(setLobbyInfo(result.data.updateLobby));
       localStorage.setItem(
         "lobbyID",
@@ -74,7 +82,11 @@ export function nowCreateLobby(data, navigate) {
         data,
         null,
         null
-      );
+      ).catch((err) => {
+        console.log("ERROR CREATING LOBBY : ", err.response.data.message);
+        toast.error(err.response.data.message);
+        toast.dismiss(toastId);
+      });
       console.log("CREATE LOBBY RESPONSE: ", result.data);
       dispatch(setLobbyInfo(result.data.updateLobby));
       dispatch(setIndex(0));
@@ -110,7 +122,10 @@ export async function getLobbyMembers(data) {
       JSON.stringify(data),
       null,
       null
-    );
+    ).catch((err) => {
+      console.log("ERROR GETTING LOBBY MEMBERS : ", err.response.data.message);
+      toast.error(err.response.data.message);
+    });
     return result.data;
   } catch (err) {
     console.log(err);
@@ -131,11 +146,15 @@ export function leaveLobby(data, navigate) {
         { userId: data._id },
         null,
         null
-      );
+      ).catch((err) => {
+        console.log("ERROR LEAVING LOBBY : ", err.response.data.message);
+        toast.error(err.response.data.message);
+      });
       dispatch(setUser({}));
       localStorage.clear();
       if (!data.leader) {
         toast.success("Lobby Left!");
+        navigate("/");
       }
       dispatch(setLobbyInfo({}));
       navigate("/");
@@ -154,7 +173,10 @@ export function getLobbyInfo(data) {
         null,
         null,
         null
-      );
+      ).catch((err) => {
+        console.log("ERROR GETTING LOBBY INFO : ", err.response.data.message);
+        toast.error(err.response.data.message);
+      });
       console.log("GET LOBBY INFO RESPONSE : ", result.data.data);
       dispatch(setLobbyInfo(result.data.data));
     } catch (err) {
@@ -172,7 +194,11 @@ export async function getPublicLobby() {
       null,
       null,
       null
-    );
+    ).catch((err) => {
+      console.log("ERROR GETTING PUBLIC LOBBIES : ", err.response.data.message);
+      toast.error(err.response.data.message);
+      toast.dismiss(toastId);
+    });
     toast.success("Public Lobbies Fetched!");
     toast.dismiss(toastId);
     return result.data;
@@ -192,7 +218,11 @@ export function joinPublicLobby(data, navigate) {
         data,
         null,
         null
-      );
+      ).catch((err) => {
+        console.log("ERROR JOINING PUBLIC LOBBY : ", err.response.data.message);
+        toast.error(err.response.data.message);
+        toast.dismiss(toastId);
+      });
       dispatch(setLobbyInfo(result.data.updateLobby));
       localStorage.setItem(
         "lobbyID",

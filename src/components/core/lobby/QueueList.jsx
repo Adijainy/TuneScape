@@ -33,6 +33,13 @@ const QueueList = () => {
           </div>
         );
       })}
+      {
+        lobbyQueue.length === 0 && (
+          <div className="w-full h-full flex justify-center items-center">
+            <p className="text-wine-20 text-4xl font-Jomhuria">Queue is empty...</p>
+          </div>
+        )
+      }
     </div>
   );
 };
