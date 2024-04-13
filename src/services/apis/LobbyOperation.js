@@ -148,7 +148,7 @@ export function leaveLobby(data, navigate) {
         null
       ).catch((err) => {
         console.log("ERROR LEAVING LOBBY : ", err.response.data.message);
-        toast.error(err.response.data.message);
+        //toast.error(err.response.data.message);
       });
       dispatch(setUser({}));
       localStorage.clear();
