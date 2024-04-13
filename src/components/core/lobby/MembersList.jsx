@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { leaveLobby } from "../../../services/apis/LobbyOperation";
 import { useDispatch } from "react-redux";
 import { MdOutlineClose } from "react-icons/md";
+import { IoCopyOutline } from "react-icons/io5";
+import { toast } from "react-hot-toast";
 
 const MembersList = ({ socket, handleCloseSlide }) => {
   const { lobbyMembers } = useSelector((state) => state.lobby);
@@ -21,6 +23,11 @@ const MembersList = ({ socket, handleCloseSlide }) => {
     await dispatch(leaveLobby(user, navigate));
     socket.emit("leaveRoom", tempLobbyCode, tempUser);
   };
+  const handleCopyCode = (e) => {
+    e.preventDefault();
+    navigator.clipboard.writeText(`${lobbyCode}`);
+    toast.success("Copied lobby code");
+  };
   return (
     <div className="h-full bg-wine-70 p-6 border-r-2 border-wine-20 max-w-[20rem] flex flex-col justify-between">
       <div>
@@ -32,6 +39,12 @@ const MembersList = ({ socket, handleCloseSlide }) => {
         <h1 className="text-center text-[2.7rem] text-wine-5 font-Bangers tracking-wider">
           {lobbyName}
         </h1>
+        <div className="text-[2rem] text-center text-wine-5 font-Jomhuria tracking-wider flex items-center justify-center">
+          Lobby Code - {lobbyCode}
+          <button className="text-xl ml-2" onClick={(e) => handleCopyCode(e)}>
+            <IoCopyOutline />
+          </button>
+        </div>
         <h1 className="text-center text-[2.2rem] text-wine-5 font-Jomhuria tracking-wider">
           Lobby Members
         </h1>

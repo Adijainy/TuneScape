@@ -16,6 +16,7 @@ import { setIndex } from "../../../slices/lobbySlice";
 import { RiMenuUnfoldLine } from "react-icons/ri";
 import { toast } from "react-hot-toast";
 import { leaveLobby } from "../../../services/apis/LobbyOperation";
+import { RxCross2 } from "react-icons/rx";
 
 const Lobby = () => {
   const audio = useRef(null);
@@ -267,7 +268,7 @@ const Lobby = () => {
                 Search Song Here
               </h1>
               {/* Search Container  */}
-              <div className="flex flex-row justify-center items-center mb-3 w-full">
+              <div className="flex flex-row justify-center items-center mb-3 w-full relative">
                 <input
                   type="text"
                   placeholder="Search Song Here"
@@ -279,7 +280,7 @@ const Lobby = () => {
                       handleSearchSong();
                     }
                   }}
-                  className="border-2 border-wine-30 bg-wine-70 text-wine-5  py-2 px-5 md:py-3 w-full rounded-l-full placeholder:text-wine-20"
+                  className="border-2 border-wine-30 bg-wine-70 text-wine-5  py-2 px-5 md:py-3 pr-6 w-full rounded-l-full placeholder:text-wine-20"
                 />
                 <button
                   onClick={() => handleSearchSong()}
@@ -287,6 +288,17 @@ const Lobby = () => {
                 >
                   <IoSearch />
                 </button>
+                {searchSong && (
+                  <button
+                    className="absolute top-4 right-[4.7rem] text-wine-20 font-bold text-lg"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setSearchSong("");
+                    }}
+                  >
+                    <RxCross2 />
+                  </button>
+                )}
               </div>
               {/* Song List  */}
 
