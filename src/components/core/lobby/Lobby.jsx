@@ -288,15 +288,17 @@ const Lobby = () => {
                 >
                   <IoSearch />
                 </button>
-                <button
-                  className="absolute top-4 right-[4.7rem] text-wine-20 font-bold text-lg"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setSearchSong("");
-                  }}
-                >
-                  <RxCross2 />
-                </button>
+                {searchSong && (
+                  <button
+                    className="absolute top-4 right-[4.7rem] text-wine-20 font-bold text-lg"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setSearchSong("");
+                    }}
+                  >
+                    <RxCross2 />
+                  </button>
+                )}
               </div>
               {/* Song List  */}
 
